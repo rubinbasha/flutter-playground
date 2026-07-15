@@ -21,7 +21,7 @@
   "signOut": "Sign out",
   "dashboardTitle": "Playground",
   "dashboardHeadline": "Authentication foundation complete",
-  "dashboardBody": "This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.",
+  "dashboardBody": "This branch demonstrates routing, MVVM Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.",
   "checklistDashboardBody": "Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.",
   "sessionStored": "Session stored locally",
   "signedInAs": "Signed in as {email}",
