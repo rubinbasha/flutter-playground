@@ -1,12 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_playground/core/events/event.dart';
 import 'package:flutter_playground/core/repositories/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'checklist_list_cubit.freezed.dart';
+
+sealed class ChecklistListEffect {
+  const ChecklistListEffect();
+}
+
+final class OpenChecklistDetails extends ChecklistListEffect {
+  const OpenChecklistDetails(this.checklistId);
+
+  final String checklistId;
+}
 
 enum ChecklistListStatus { initial, loading, success }
 
@@ -18,6 +29,7 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default('') String query,
     @Default(false) bool isRefreshing,
     FailureType? failure,
+    Event<ChecklistListEffect>? effect,
   }) = _ChecklistListState;
 }
 
@@ -27,6 +39,10 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
   final ChecklistRepository _repository;
   List<ChecklistSummary> _allItems = const [];
   Timer? _searchDebounce;
+
+  void checklistSelected(String checklistId) {
+    emit(state.copyWith(effect: Event(OpenChecklistDetails(checklistId))));
+  }
 
   Future<void> load() => _fetch(isRefresh: false);
 
@@ -41,6 +57,7 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
         status: isRefresh ? state.status : ChecklistListStatus.loading,
         isRefreshing: isRefresh,
         failure: null,
+        effect: null,
       ),
     );
     final result = await _repository.getChecklists();

@@ -72,4 +72,21 @@ void main() {
     expect(cubit.state.failure, FailureType.network);
     expect(cubit.state.isRefreshing, isFalse);
   });
+
+  blocTest<ChecklistListCubit, ChecklistListState>(
+    'selection emits a consumable navigation effect',
+    build: () => ChecklistListCubit(_MockChecklistRepository()),
+    act: (cubit) => cubit.checklistSelected('safety'),
+    expect: () => [
+      isA<ChecklistListState>().having(
+        (state) => state.effect?.peekContent(),
+        'effect',
+        isA<OpenChecklistDetails>().having(
+          (effect) => effect.checklistId,
+          'checklistId',
+          'safety',
+        ),
+      ),
+    ],
+  );
 }

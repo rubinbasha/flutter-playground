@@ -49,10 +49,13 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+      listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
-        if (state.status == AuthStatus.authenticated) {
-          context.go(DashboardScreen.route);
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case AuthOpenDashboard():
+            context.go(DashboardScreen.route);
+          case _:
+            break;
         }
       },
       child: Scaffold(

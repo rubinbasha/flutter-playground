@@ -3,7 +3,7 @@
 Read the note for the branch you are studying before changing its code.
 
 1. [Authentication foundation](01-auth-foundation.md)
-2. [Checklist MVI slice](02-checklist-mvi.md)
+2. [Checklist MVVM slice](02-checklist-mvvm.md)
 3. [Debounced checklist search](03-debounced-search.md)
 4. [Pull to refresh](04-pull-to-refresh.md)
 5. [Branching strategy](branching-strategy.md)

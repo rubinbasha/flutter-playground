@@ -30,7 +30,7 @@ void main() {
   );
 
   blocTest<AuthCubit, AuthState>(
-    'successful login trims email, clears password, and authenticates',
+    'successful login emits a single dashboard effect',
     setUp: () {
       when(
         () => repository.login(
@@ -41,8 +41,9 @@ void main() {
     },
     build: () => AuthCubit(repository),
     act: (cubit) async {
-      cubit.emailChanged('  learner@example.com  ');
-      cubit.passwordChanged('playground');
+      cubit
+        ..emailChanged('  learner@example.com  ')
+        ..passwordChanged('playground');
       await cubit.login();
     },
     skip: 2,
@@ -52,10 +53,14 @@ void main() {
         password: 'playground',
         isSubmitting: true,
       ),
-      const AuthState(
-        email: 'learner@example.com',
-        status: AuthStatus.authenticated,
-      ),
+      isA<AuthState>()
+          .having((state) => state.email, 'email', 'learner@example.com')
+          .having((state) => state.status, 'status', AuthStatus.authenticated)
+          .having(
+            (state) => state.effect?.peekContent(),
+            'effect',
+            isA<AuthOpenDashboard>(),
+          ),
     ],
   );
 }
