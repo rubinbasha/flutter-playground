@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_playground/core/effects/effect.dart';
+import 'package:flutter_playground/core/events/event.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -28,7 +28,7 @@ abstract class AuthState with _$AuthState {
     @Default(AuthStatus.unauthenticated) AuthStatus status,
     @Default(false) bool isSubmitting,
     FailureType? failure,
-    Effect<AuthEffect>? effect,
+    Event<AuthEffect>? effect,
   }) = _AuthState;
 }
 
@@ -73,7 +73,7 @@ class AuthCubit extends Cubit<AuthState> {
             password: '',
             status: AuthStatus.authenticated,
             isSubmitting: false,
-            effect: Effect(const AuthOpenDashboard()),
+            effect: Event(const AuthOpenDashboard()),
           ),
         );
       case ApiFailure<String>(:final type):
@@ -90,7 +90,7 @@ class AuthCubit extends Cubit<AuthState> {
           AuthState(
             email: state.email,
             status: AuthStatus.unauthenticated,
-            effect: Effect(const AuthOpenLogin()),
+            effect: Event(const AuthOpenLogin()),
           ),
         );
       case ApiFailure<void>(:final type):

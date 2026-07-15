@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get email; String get password; AuthStatus get status; bool get isSubmitting; FailureType? get failure; Effect<AuthEffect>? get effect;
+ String get email; String get password; AuthStatus get status; bool get isSubmitting; FailureType? get failure; Event<AuthEffect>? get effect;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Effect<AuthEffect>? effect
+ String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Event<AuthEffect>? effect
 });
 
 
@@ -70,7 +70,7 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as AuthStatus,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
-as Effect<AuthEffect>?,
+as Event<AuthEffect>?,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Effect<AuthEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
 return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
@@ -176,7 +176,7 @@ return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Effect<AuthEffect>? effect)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
 return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
@@ -196,7 +196,7 @@ return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Effect<AuthEffect>? effect)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
 return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
@@ -219,7 +219,7 @@ class _AuthState implements AuthState {
 @override@JsonKey() final  AuthStatus status;
 @override@JsonKey() final  bool isSubmitting;
 @override final  FailureType? failure;
-@override final  Effect<AuthEffect>? effect;
+@override final  Event<AuthEffect>? effect;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Effect<AuthEffect>? effect
+ String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Event<AuthEffect>? effect
 });
 
 
@@ -276,7 +276,7 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as AuthStatus,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
-as Effect<AuthEffect>?,
+as Event<AuthEffect>?,
   ));
 }
 
