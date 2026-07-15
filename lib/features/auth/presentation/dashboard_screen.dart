@@ -71,14 +71,14 @@ class DashboardView extends StatelessWidget {
               );
             },
             builder: (context, state) {
+              final cubit = context.read<ChecklistListCubit>();
               return ChecklistListContent(
                 state: state,
                 email: context.watch<AuthCubit>().state.email,
-                onRetry: context.read<ChecklistListCubit>().load,
-                onRefresh: context.read<ChecklistListCubit>().refresh,
-                onQueryChanged: context
-                    .read<ChecklistListCubit>()
-                    .searchChanged,
+                onRetry: cubit.load,
+                onRefresh: cubit.refresh,
+                onQueryChanged: cubit.searchChanged,
+                onToggleFavorite: cubit.toggleFavorite,
                 onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
               );
             },
@@ -96,6 +96,7 @@ class ChecklistListContent extends StatelessWidget {
     required this.onRetry,
     required this.onRefresh,
     required this.onQueryChanged,
+    required this.onToggleFavorite,
     required this.onSelected,
     super.key,
   });
@@ -105,6 +106,7 @@ class ChecklistListContent extends StatelessWidget {
   final VoidCallback onRetry;
   final Future<void> Function() onRefresh;
   final ValueChanged<String> onQueryChanged;
+  final ValueChanged<String> onToggleFavorite;
   final ValueChanged<String> onSelected;
 
   @override
@@ -155,7 +157,12 @@ class ChecklistListContent extends StatelessWidget {
             child: Column(
               children: [
                 for (final item in state.items)
-                  _ChecklistCard(item: item, onSelected: onSelected),
+                  _ChecklistCard(
+                    item: item,
+                    isFavorite: state.favoriteIds.contains(item.id),
+                    onToggleFavorite: onToggleFavorite,
+                    onSelected: onSelected,
+                  ),
               ],
             ),
           ),
@@ -166,9 +173,16 @@ class ChecklistListContent extends StatelessWidget {
 }
 
 class _ChecklistCard extends StatelessWidget {
-  const _ChecklistCard({required this.item, required this.onSelected});
+  const _ChecklistCard({
+    required this.item,
+    required this.isFavorite,
+    required this.onToggleFavorite,
+    required this.onSelected,
+  });
 
   final ChecklistSummary item;
+  final bool isFavorite;
+  final ValueChanged<String> onToggleFavorite;
   final ValueChanged<String> onSelected;
 
   @override
@@ -183,7 +197,20 @@ class _ChecklistCard extends StatelessWidget {
             item.appGroupName,
           ].whereType<String>().join(' • '),
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              key: Key('favorite-${item.id}'),
+              tooltip: isFavorite
+                  ? context.l10n.removeFavorite
+                  : context.l10n.addFavorite,
+              onPressed: () => onToggleFavorite(item.id),
+              icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+            ),
+            const Icon(Icons.chevron_right),
+          ],
+        ),
         onTap: () => onSelected(item.id),
       ),
     );

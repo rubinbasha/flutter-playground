@@ -25,6 +25,7 @@ import '../../features/checklists/data/checklist_service.dart' as _i856;
 import '../../features/checklists/data/checklist_updates_repository.dart'
     as _i435;
 import '../../features/checklists/data/checklist_updates_socket.dart' as _i373;
+import '../../features/checklists/data/favorites_store.dart' as _i337;
 import '../network/auth_token_interceptor.dart' as _i743;
 import 'modules.dart' as _i738;
 
@@ -55,6 +56,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i5.ChecklistCache>(
       () => _i5.ChecklistCache(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i337.FavoritesStore>(
+      () => _i337.FavoritesStore(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i373.ChecklistUpdatesSocket>(
       () => _i373.FakeChecklistUpdatesSocket(),
@@ -106,6 +110,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i726.AuthRepository>(),
         gh<_i442.ChecklistRepository>(),
         gh<_i435.ChecklistUpdatesRepository>(),
+        gh<_i337.FavoritesStore>(),
       ),
     );
     return this;

@@ -226,6 +226,18 @@ abstract class AppLocalizations {
   /// **'No checklists are available.'**
   String get noChecklists;
 
+  /// No description provided for @addFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get addFavorite;
+
+  /// No description provided for @removeFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFavorite;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

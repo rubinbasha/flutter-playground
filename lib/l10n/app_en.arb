@@ -33,6 +33,8 @@
   "checklistsTitle": "Checklists",
   "searchChecklists": "Search checklists",
   "noChecklists": "No checklists are available.",
+  "addFavorite": "Add to favorites",
+  "removeFavorite": "Remove from favorites",
   "retry": "Try again",
   "refreshFailed": "Refresh failed. Existing content is still available.",
   "checklistDetailsTitle": "Checklist details",

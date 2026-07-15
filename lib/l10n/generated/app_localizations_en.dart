@@ -83,6 +83,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noChecklists => 'No checklists are available.';
 
   @override
+  String get addFavorite => 'Add to favorites';
+
+  @override
+  String get removeFavorite => 'Remove from favorites';
+
+  @override
   String get retry => 'Try again';
 
   @override

@@ -22,6 +22,7 @@ void main() {
             onRetry: () {},
             onRefresh: () async {},
             onQueryChanged: (_) {},
+            onToggleFavorite: (_) {},
             onSelected: (id) => selectedId = id,
           ),
         ),
