@@ -35,6 +35,12 @@ runnable. Combined branches demonstrate how the pieces interact.
 See [docs/branching-strategy.md](docs/branching-strategy.md) for the graph and
 [docs/README.md](docs/README.md) for implementation notes.
 
+## Project structure
+
+Feature directories own transport details, models, state, and UI. Repository
+classes live separately in `lib/core/repositories/`, where they validate and
+coordinate feature data for Cubits.
+
 ## Run
 
 ```sh

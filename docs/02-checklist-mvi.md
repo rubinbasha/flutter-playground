@@ -6,7 +6,7 @@ unidirectional contracts.
 ## Structure
 
 - Retrofit DTOs accept nullable response fields.
-- `ChecklistRepository` drops malformed list rows and rejects malformed detail
+- `core/repositories/ChecklistRepository` drops malformed list rows and rejects malformed detail
   payloads before creating strict domain models.
 - `ChecklistListCubit` and `ChecklistDetailsCubit` own asynchronous work and
   expose immutable Freezed state.
