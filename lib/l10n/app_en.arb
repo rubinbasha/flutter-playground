@@ -31,6 +31,7 @@
     }
   },
   "checklistsTitle": "Checklists",
+  "searchChecklists": "Search checklists",
   "noChecklists": "No checklists are available.",
   "retry": "Try again",
   "checklistDetailsTitle": "Checklist details",

@@ -66,6 +66,9 @@ class DashboardView extends StatelessWidget {
                 state: state,
                 email: context.watch<AuthCubit>().state.email,
                 onRetry: context.read<ChecklistListCubit>().load,
+                onQueryChanged: context
+                    .read<ChecklistListCubit>()
+                    .searchChanged,
                 onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
               );
             },
@@ -81,6 +84,7 @@ class ChecklistListContent extends StatelessWidget {
     required this.state,
     required this.email,
     required this.onRetry,
+    required this.onQueryChanged,
     required this.onSelected,
     super.key,
   });
@@ -88,6 +92,7 @@ class ChecklistListContent extends StatelessWidget {
   final ChecklistListState state;
   final String email;
   final VoidCallback onRetry;
+  final ValueChanged<String> onQueryChanged;
   final ValueChanged<String> onSelected;
 
   @override
@@ -113,6 +118,15 @@ class ChecklistListContent extends StatelessWidget {
         Text(
           context.l10n.checklistsTitle,
           style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          key: const Key('checklistSearchField'),
+          decoration: InputDecoration(
+            labelText: context.l10n.searchChecklists,
+            prefixIcon: const Icon(Icons.search),
+          ),
+          onChanged: onQueryChanged,
         ),
         const SizedBox(height: 8),
         PageStateView(

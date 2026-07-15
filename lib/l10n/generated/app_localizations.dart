@@ -214,6 +214,12 @@ abstract class AppLocalizations {
   /// **'Checklists'**
   String get checklistsTitle;
 
+  /// No description provided for @searchChecklists.
+  ///
+  /// In en, this message translates to:
+  /// **'Search checklists'**
+  String get searchChecklists;
+
   /// No description provided for @noChecklists.
   ///
   /// In en, this message translates to:

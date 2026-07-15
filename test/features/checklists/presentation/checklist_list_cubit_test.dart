@@ -3,6 +3,7 @@ import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class _MockChecklistRepository extends Mock implements ChecklistRepository {}
@@ -23,5 +24,31 @@ void main() {
       const ChecklistListState(status: ChecklistListStatus.loading),
       ChecklistListState(status: ChecklistListStatus.success, items: items),
     ],
+  );
+
+  test(
+    'search filters after the debounce and preserves source order',
+    () async {
+      final repository = _MockChecklistRepository();
+      when(repository.getChecklists).thenAnswer(
+        (_) async => const ApiSuccess([
+          ChecklistSummary(id: 'safety', name: 'Safety walk'),
+          ChecklistSummary(
+            id: 'vehicle',
+            name: 'Vehicle handover',
+            categoryName: 'Fleet',
+          ),
+        ]),
+      );
+      final cubit = ChecklistListCubit(repository);
+      addTearDown(cubit.close);
+
+      await cubit.load();
+      cubit.searchChanged('fleet');
+      await Future<void>.delayed(const Duration(milliseconds: 350));
+
+      expect(cubit.state.items.map((item) => item.id), ['vehicle']);
+      expect(cubit.state.query, 'fleet');
+    },
   );
 }

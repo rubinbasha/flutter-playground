@@ -77,6 +77,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checklistsTitle => 'Checklists';
 
   @override
+  String get searchChecklists => 'Search checklists';
+
+  @override
   String get noChecklists => 'No checklists are available.';
 
   @override
