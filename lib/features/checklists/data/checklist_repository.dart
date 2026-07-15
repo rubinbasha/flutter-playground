@@ -13,11 +13,14 @@ class ChecklistRepository {
 
   final ChecklistService _service;
 
-  Future<ApiResult<List<ChecklistSummary>>> getChecklists() async {
+  Future<ApiResult<ChecklistPage>> getChecklists({
+    int limit = defaultLimit,
+    int offset = 0,
+  }) async {
     try {
       final response = await _service.getChecklists(
-        limit: defaultLimit,
-        offset: 0,
+        limit: limit,
+        offset: offset,
       );
       final items =
           response.data
@@ -25,7 +28,12 @@ class ChecklistRepository {
               .whereType<ChecklistSummary>()
               .toList(growable: false) ??
           const <ChecklistSummary>[];
-      return ApiSuccess(items);
+      return ApiSuccess(
+        ChecklistPage(
+          items: items,
+          totalCount: response.totalCount ?? offset + items.length,
+        ),
+      );
     } on DioException catch (error) {
       return ApiFailure(type: FailureType.network, debugMessage: error.message);
     } on Exception catch (error) {

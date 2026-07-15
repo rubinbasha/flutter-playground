@@ -66,6 +66,7 @@ class DashboardView extends StatelessWidget {
                 state: state,
                 email: context.watch<AuthCubit>().state.email,
                 onRetry: context.read<ChecklistListCubit>().load,
+                onLoadMore: context.read<ChecklistListCubit>().loadNextPage,
                 onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
               );
             },
@@ -81,6 +82,7 @@ class ChecklistListContent extends StatelessWidget {
     required this.state,
     required this.email,
     required this.onRetry,
+    required this.onLoadMore,
     required this.onSelected,
     super.key,
   });
@@ -88,49 +90,63 @@ class ChecklistListContent extends StatelessWidget {
   final ChecklistListState state;
   final String email;
   final VoidCallback onRetry;
+  final VoidCallback onLoadMore;
   final ValueChanged<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        Text(
-          context.l10n.dashboardHeadline,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 8),
-        Text(context.l10n.checklistDashboardBody),
-        const SizedBox(height: 16),
-        Card(
-          child: ListTile(
-            leading: const Icon(Icons.verified_user_outlined),
-            title: Text(context.l10n.sessionStored),
-            subtitle: Text(context.l10n.signedInAs(email)),
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.extentAfter < 240) {
+          onLoadMore();
+        }
+        return false;
+      },
+      child: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Text(
+            context.l10n.dashboardHeadline,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          context.l10n.checklistsTitle,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 8),
-        PageStateView(
-          isLoading:
-              state.status == ChecklistListStatus.initial ||
-              state.status == ChecklistListStatus.loading,
-          isEmpty: state.items.isEmpty,
-          failure: state.failure,
-          onRetry: onRetry,
-          emptyMessage: context.l10n.noChecklists,
-          child: Column(
-            children: [
-              for (final item in state.items)
-                _ChecklistCard(item: item, onSelected: onSelected),
-            ],
+          const SizedBox(height: 8),
+          Text(context.l10n.checklistDashboardBody),
+          const SizedBox(height: 16),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.verified_user_outlined),
+              title: Text(context.l10n.sessionStored),
+              subtitle: Text(context.l10n.signedInAs(email)),
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 24),
+          Text(
+            context.l10n.checklistsTitle,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const SizedBox(height: 8),
+          PageStateView(
+            isLoading:
+                state.status == ChecklistListStatus.initial ||
+                state.status == ChecklistListStatus.loading,
+            isEmpty: state.items.isEmpty,
+            failure: state.failure,
+            onRetry: onRetry,
+            emptyMessage: context.l10n.noChecklists,
+            child: Column(
+              children: [
+                for (final item in state.items)
+                  _ChecklistCard(item: item, onSelected: onSelected),
+                if (state.isLoadingMore)
+                  const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
