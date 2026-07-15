@@ -59,11 +59,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardBody =>
-      'This branch demonstrates routing, MVI Bloc state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.';
+      'This branch demonstrates routing, MVVM Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.';
 
   @override
   String get checklistDashboardBody =>
-      'Checklist data now flows from a guarded API boundary through repositories and immutable Bloc state into stateless widgets.';
+      'Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.';
 
   @override
   String get sessionStored => 'Session stored locally';

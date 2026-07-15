@@ -187,13 +187,13 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardBody.
   ///
   /// In en, this message translates to:
-  /// **'This branch demonstrates routing, MVI Bloc state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.'**
+  /// **'This branch demonstrates routing, MVVM Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.'**
   String get dashboardBody;
 
   /// No description provided for @checklistDashboardBody.
   ///
   /// In en, this message translates to:
-  /// **'Checklist data now flows from a guarded API boundary through repositories and immutable Bloc state into stateless widgets.'**
+  /// **'Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.'**
   String get checklistDashboardBody;
 
   /// No description provided for @sessionStored.

@@ -1,34 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_playground/core/mvi/event.dart';
+import 'package:flutter_playground/core/effects/effect.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'auth_bloc.freezed.dart';
-
-sealed class AuthIntent {
-  const AuthIntent();
-}
-
-final class AuthEmailChanged extends AuthIntent {
-  const AuthEmailChanged(this.email);
-
-  final String email;
-}
-
-final class AuthPasswordChanged extends AuthIntent {
-  const AuthPasswordChanged(this.password);
-
-  final String password;
-}
-
-final class AuthLoginSubmitted extends AuthIntent {
-  const AuthLoginSubmitted();
-}
-
-final class AuthLogoutRequested extends AuthIntent {
-  const AuthLogoutRequested();
-}
+part 'auth_cubit.freezed.dart';
 
 sealed class AuthEffect {
   const AuthEffect();
@@ -52,12 +28,12 @@ abstract class AuthState with _$AuthState {
     @Default(AuthStatus.unauthenticated) AuthStatus status,
     @Default(false) bool isSubmitting,
     FailureType? failure,
-    Event<AuthEffect>? effect,
+    Effect<AuthEffect>? effect,
   }) = _AuthState;
 }
 
-class AuthBloc extends Bloc<AuthIntent, AuthState> {
-  AuthBloc(this._repository)
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit(this._repository)
     : super(
         AuthState(
           email: _repository.sessionEmail ?? '',
@@ -65,29 +41,19 @@ class AuthBloc extends Bloc<AuthIntent, AuthState> {
               ? AuthStatus.authenticated
               : AuthStatus.unauthenticated,
         ),
-      ) {
-    on<AuthEmailChanged>(_onEmailChanged);
-    on<AuthPasswordChanged>(_onPasswordChanged);
-    on<AuthLoginSubmitted>(_onLoginSubmitted);
-    on<AuthLogoutRequested>(_onLogoutRequested);
-  }
+      );
 
   final AuthRepository _repository;
 
-  void _onEmailChanged(AuthEmailChanged intent, Emitter<AuthState> emit) {
-    emit(state.copyWith(email: intent.email, failure: null, effect: null));
+  void emailChanged(String email) {
+    emit(state.copyWith(email: email, failure: null, effect: null));
   }
 
-  void _onPasswordChanged(AuthPasswordChanged intent, Emitter<AuthState> emit) {
-    emit(
-      state.copyWith(password: intent.password, failure: null, effect: null),
-    );
+  void passwordChanged(String password) {
+    emit(state.copyWith(password: password, failure: null, effect: null));
   }
 
-  Future<void> _onLoginSubmitted(
-    AuthLoginSubmitted intent,
-    Emitter<AuthState> emit,
-  ) async {
+  Future<void> login() async {
     final email = state.email.trim();
     if (email.isEmpty || state.password.isEmpty) {
       emit(state.copyWith(failure: FailureType.validation, effect: null));
@@ -107,7 +73,7 @@ class AuthBloc extends Bloc<AuthIntent, AuthState> {
             password: '',
             status: AuthStatus.authenticated,
             isSubmitting: false,
-            effect: Event(const AuthOpenDashboard()),
+            effect: Effect(const AuthOpenDashboard()),
           ),
         );
       case ApiFailure<String>(:final type):
@@ -115,10 +81,7 @@ class AuthBloc extends Bloc<AuthIntent, AuthState> {
     }
   }
 
-  Future<void> _onLogoutRequested(
-    AuthLogoutRequested intent,
-    Emitter<AuthState> emit,
-  ) async {
+  Future<void> logout() async {
     emit(state.copyWith(isSubmitting: true, failure: null, effect: null));
     final result = await _repository.logout();
     switch (result) {
@@ -127,7 +90,7 @@ class AuthBloc extends Bloc<AuthIntent, AuthState> {
           AuthState(
             email: state.email,
             status: AuthStatus.unauthenticated,
-            effect: Event(const AuthOpenLogin()),
+            effect: Effect(const AuthOpenLogin()),
           ),
         );
       case ApiFailure<void>(:final type):
