@@ -20,6 +20,8 @@ void main() {
               items: [ChecklistSummary(id: 'safety', name: 'Safety walk')],
             ),
             onRetry: () {},
+            onRefresh: () async {},
+            onQueryChanged: (_) {},
             onSelected: (id) => selectedId = id,
           ),
         ),
