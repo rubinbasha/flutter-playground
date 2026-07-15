@@ -3,31 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
 import 'package:flutter_playground/core/widgets/page_state_view.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
-import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({
-    required this.authCubit,
-    required this.checklistListCubit,
-    super.key,
-  });
+  const DashboardScreen({required this.checklistListCubit, super.key});
 
   static const String route = '/dashboard';
 
-  final AuthCubit authCubit;
   final ChecklistListCubit checklistListCubit;
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: authCubit),
-        BlocProvider.value(value: checklistListCubit),
-      ],
+    return BlocProvider.value(
+      value: checklistListCubit,
       child: const DashboardView(),
     );
   }
@@ -38,39 +29,16 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.status != current.status,
-      listener: (context, state) {
-        if (state.status == AuthStatus.unauthenticated) {
-          context.go(LoginScreen.route);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(context.l10n.dashboardTitle),
-          actions: [
-            IconButton(
-              key: const Key('signOutButton'),
-              tooltip: context.l10n.signOut,
-              onPressed: context.watch<AuthCubit>().state.isSubmitting
-                  ? null
-                  : context.read<AuthCubit>().logout,
-              icon: const Icon(Icons.logout),
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: BlocBuilder<ChecklistListCubit, ChecklistListState>(
-            builder: (context, state) {
-              return ChecklistListContent(
-                state: state,
-                email: context.watch<AuthCubit>().state.email,
-                onRetry: context.read<ChecklistListCubit>().load,
-                onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
-              );
-            },
-          ),
-        ),
+    return SafeArea(
+      child: BlocBuilder<ChecklistListCubit, ChecklistListState>(
+        builder: (context, state) {
+          return ChecklistListContent(
+            state: state,
+            email: context.watch<AuthCubit>().state.email,
+            onRetry: context.read<ChecklistListCubit>().load,
+            onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
+          );
+        },
       ),
     );
   }

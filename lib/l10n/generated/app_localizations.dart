@@ -172,6 +172,36 @@ abstract class AppLocalizations {
   /// **'Sign out'**
   String get signOut;
 
+  /// No description provided for @homeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeLabel;
+
+  /// No description provided for @accountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountLabel;
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account'**
+  String get accountTitle;
+
+  /// No description provided for @aboutThisPlayground.
+  ///
+  /// In en, this message translates to:
+  /// **'About this playground'**
+  String get aboutThisPlayground;
+
+  /// No description provided for @aboutThisPlaygroundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A mobile-only branch-driven app for learning production Flutter patterns.'**
+  String get aboutThisPlaygroundBody;
+
   /// No description provided for @dashboardTitle.
   ///
   /// In en, this message translates to:

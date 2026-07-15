@@ -52,6 +52,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signOut => 'Sign out';
 
   @override
+  String get homeLabel => 'Home';
+
+  @override
+  String get accountLabel => 'Account';
+
+  @override
+  String get accountTitle => 'Your account';
+
+  @override
+  String get aboutThisPlayground => 'About this playground';
+
+  @override
+  String get aboutThisPlaygroundBody =>
+      'A mobile-only branch-driven app for learning production Flutter patterns.';
+
+  @override
   String get dashboardTitle => 'Playground';
 
   @override
