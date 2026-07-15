@@ -1,4 +1,5 @@
 import 'package:flutter_playground/core/result/api_result.dart';
+import 'package:flutter_playground/features/checklists/data/checklist_cache.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_service.dart';
@@ -8,13 +9,23 @@ import 'package:mocktail/mocktail.dart';
 
 class _MockChecklistService extends Mock implements ChecklistService {}
 
+class _MockChecklistCache extends Mock implements ChecklistCache {}
+
 void main() {
   late _MockChecklistService service;
+  late _MockChecklistCache cache;
   late ChecklistRepository repository;
+
+  setUpAll(() {
+    registerFallbackValue(<ChecklistSummary>[]);
+  });
 
   setUp(() {
     service = _MockChecklistService();
-    repository = ChecklistRepository(service);
+    cache = _MockChecklistCache();
+    when(() => cache.save(any())).thenAnswer((_) async {});
+    when(cache.load).thenReturn(null);
+    repository = ChecklistRepository(service, cache);
   });
 
   test('drops malformed rows while preserving valid backend order', () async {
@@ -58,6 +69,29 @@ void main() {
         (failure) => failure.type,
         'type',
         FailureType.invalidResponse,
+      ),
+    );
+  });
+
+  test('returns cached rows when the network fails', () async {
+    when(
+      () => service.getChecklists(
+        limit: ChecklistRepository.defaultLimit,
+        offset: 0,
+      ),
+    ).thenThrow(Exception('offline'));
+    when(cache.load).thenReturn([
+      const ChecklistSummary(id: 'cached', name: 'Cached checklist'),
+    ]);
+
+    final result = await repository.getChecklists();
+
+    expect(
+      result,
+      isA<ApiSuccess<List<ChecklistSummary>>>().having(
+        (success) => success.data.single.id,
+        'cached id',
+        'cached',
       ),
     );
   });
