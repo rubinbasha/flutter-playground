@@ -71,7 +71,8 @@ class DashboardView extends StatelessWidget {
                 state: state,
                 email: context.watch<AuthBloc>().state.email,
                 onRetry: context.read<ChecklistListCubit>().load,
-                onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
+                onSelected: (id) =>
+                    context.push(ChecklistDetailsScreen.path(id)),
               );
             },
           ),
