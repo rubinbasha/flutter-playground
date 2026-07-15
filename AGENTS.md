@@ -45,7 +45,7 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 - Keep APIs, services, DTOs, and feature-owned persistence in feature `data`
   directories. Keep repository classes in `lib/core/repositories/` so the
   coordination boundary is visibly separate from individual features.
-- Keep a feature's Cubit and screen close together.
+- Keep a feature's Bloc and screen close together.
 - Other shared infrastructure lives under `lib/core/`; shared visual styling
   lives under `lib/theme/`.
 - Technical implementation notes live under `docs/` and are updated with each
@@ -53,11 +53,16 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 
 ## State management
 
-- Use `Cubit` from `flutter_bloc` for screen state.
-- Define immutable state with Freezed in the Cubit file.
-- State flows down; user actions flow up through explicit Cubit methods.
+- Use `Bloc<Intent, State>` from `flutter_bloc` for screen state.
+- Every screen-level Bloc defines typed `Intent`, immutable `State`, and typed
+  `Effect` contracts next to the Bloc.
+- State is durable and renderable. Effects are one-off navigation, snackbar,
+  dialog, or focus actions wrapped in `Event<Effect>` and consumed by a
+  `BlocListener` with `getContentIfNotConsumed()`.
+- Create a fresh `Event` for every effect; never reuse a consumed wrapper.
+- State flows down; widgets send explicit intents up with `bloc.add(intent)`.
 - Widgets trigger repository-backed work without awaiting it to decide UI
-  success. Cubits own the async work and emit the result.
+  success. Blocs own the async work and emit the result.
 - Keep navigation in screen listeners or router redirects, not repositories.
 - Name persisted and in-edit values by role when both exist.
 

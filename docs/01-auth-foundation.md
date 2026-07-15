@@ -4,17 +4,19 @@
 
 ## Flow
 
-- `LoginView` sends field changes and submit actions to `AuthCubit`.
-- `AuthCubit` validates local input and delegates asynchronous work.
+- `LoginView` sends typed field and submit intents to `AuthBloc`.
+- `AuthBloc` validates local input, delegates asynchronous work, emits durable
+  `AuthState`, and exposes navigation as a consumable `Event<AuthEffect>`.
 - `AuthRepository` validates nullable network response fields before storing a
   session.
 - `AuthService` has deterministic demo and Dio/Retrofit implementations.
 - `AuthTokenInterceptor` removes the public-request marker and attaches the
   stored API token only to authenticated calls.
-- `go_router` replaces the auth route after login or logout.
+- `BlocListener` consumes each navigation effect once and asks `go_router` to
+  replace the auth route after login or logout.
 
-The default `demo` injectable environment makes the branch runnable without a
-backend. `USE_REAL_API=true` selects the production adapter.
+The default `production` injectable environment uses the Retrofit adapter.
+`USE_REAL_API=false` selects the deterministic demo implementation.
 
 ## Boundaries
 

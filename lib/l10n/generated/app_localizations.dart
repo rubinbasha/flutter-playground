@@ -187,7 +187,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardBody.
   ///
   /// In en, this message translates to:
-  /// **'This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.'**
+  /// **'This branch demonstrates routing, MVI Bloc state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.'**
   String get dashboardBody;
 
   /// No description provided for @sessionStored.

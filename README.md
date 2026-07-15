@@ -5,7 +5,8 @@ A branch-driven Flutter learning project inspired by the progression in
 conventions from `roe_risk_checkit`, reduced to examples that are small enough
 to study. The generated application targets Android and iOS only.
 
-The app runs in demo mode by default. Sign in with:
+The app uses the real API adapter by default. For deterministic learning and
+tests, start it with `--dart-define=USE_REAL_API=false` and sign in with:
 
 ```text
 learner@example.com
@@ -19,7 +20,7 @@ runnable. Combined branches demonstrate how the pieces interact.
 
 | Branch | Learning focus |
 | --- | --- |
-| `main` | Auth API boundary, Cubit, routing, DI, token persistence |
+| `main` | Auth API boundary, MVI Bloc, routing, DI, token persistence |
 | `mvi` | Immutable feature contracts, checklist list/details, layered tests |
 | `websocket` | Lifecycle-safe realtime updates |
 | `local-cache` | Offline checklist fallback |
@@ -39,7 +40,11 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for the graph and
 
 Feature directories own transport details, models, state, and UI. Repository
 classes live separately in `lib/core/repositories/`, where they validate and
-coordinate feature data for Cubits.
+coordinate feature data for Blocs.
+
+Screen logic follows explicit MVI contracts: widgets send typed intents to a
+Bloc, render immutable state, and consume one-off typed effects through
+`BlocListener`. See [docs/mvi-conventions.md](docs/mvi-conventions.md).
 
 ## Run
 
@@ -50,13 +55,11 @@ dart run build_runner build
 flutter run
 ```
 
-To exercise the real Retrofit adapter instead of the deterministic demo
-service:
+To use the deterministic demo service instead of the default Retrofit adapter:
 
 ```sh
 flutter run \
-  --dart-define=USE_REAL_API=true \
-  --dart-define=API_BASE_URL=https://example.com/api/
+  --dart-define=USE_REAL_API=false
 ```
 
 ## Quality gates

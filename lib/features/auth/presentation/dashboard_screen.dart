@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({required this.cubit, super.key});
+  const DashboardScreen({required this.bloc, super.key});
 
   static const String route = '/dashboard';
 
-  final AuthCubit cubit;
+  final AuthBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(value: cubit, child: const DashboardView());
+    return BlocProvider.value(value: bloc, child: const DashboardView());
   }
 }
 
@@ -23,11 +23,14 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
-        if (state.status == AuthStatus.unauthenticated) {
-          context.go(LoginScreen.route);
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case AuthOpenLogin():
+            context.go(LoginScreen.route);
+          case _:
+            break;
         }
       },
       child: Scaffold(
@@ -37,9 +40,11 @@ class DashboardView extends StatelessWidget {
             IconButton(
               key: const Key('signOutButton'),
               tooltip: context.l10n.signOut,
-              onPressed: context.watch<AuthCubit>().state.isSubmitting
+              onPressed: context.watch<AuthBloc>().state.isSubmitting
                   ? null
-                  : context.read<AuthCubit>().logout,
+                  : () => context.read<AuthBloc>().add(
+                      const AuthLogoutRequested(),
+                    ),
               icon: const Icon(Icons.logout),
             ),
           ],
@@ -63,7 +68,7 @@ class DashboardView extends StatelessWidget {
                     title: Text(context.l10n.sessionStored),
                     subtitle: Text(
                       context.l10n.signedInAs(
-                        context.watch<AuthCubit>().state.email,
+                        context.watch<AuthBloc>().state.email,
                       ),
                     ),
                   ),

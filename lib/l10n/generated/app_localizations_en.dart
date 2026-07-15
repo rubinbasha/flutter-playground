@@ -59,7 +59,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardBody =>
-      'This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.';
+      'This branch demonstrates routing, MVI Bloc state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.';
 
   @override
   String get sessionStored => 'Session stored locally';

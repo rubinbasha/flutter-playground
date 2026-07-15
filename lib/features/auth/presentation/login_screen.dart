@@ -3,20 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/auth/data/auth_service.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({required this.cubit, super.key});
+  const LoginScreen({required this.bloc, super.key});
 
   static const String route = '/login';
 
-  final AuthCubit cubit;
+  final AuthBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(value: cubit, child: const LoginView());
+    return BlocProvider.value(value: bloc, child: const LoginView());
   }
 }
 
@@ -34,8 +34,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    final cubit = context.read<AuthCubit>();
-    _emailController = TextEditingController(text: cubit.state.email);
+    final bloc = context.read<AuthBloc>();
+    _emailController = TextEditingController(text: bloc.state.email);
     _passwordController = TextEditingController();
   }
 
@@ -48,11 +48,14 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
-        if (state.status == AuthStatus.authenticated) {
-          context.go(DashboardScreen.route);
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case AuthOpenDashboard():
+            context.go(DashboardScreen.route);
+          case _:
+            break;
         }
       },
       child: Scaffold(
@@ -87,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
                             key: const Key('emailField'),
                             controller: _emailController,
                             enabled: !context
-                                .watch<AuthCubit>()
+                                .watch<AuthBloc>()
                                 .state
                                 .isSubmitting,
                             autofillHints: const [AutofillHints.email],
@@ -97,27 +100,30 @@ class _LoginViewState extends State<LoginView> {
                               labelText: context.l10n.emailLabel,
                               prefixIcon: const Icon(Icons.email_outlined),
                             ),
-                            onChanged: context.read<AuthCubit>().emailChanged,
+                            onChanged: (email) => context.read<AuthBloc>().add(
+                              AuthEmailChanged(email),
+                            ),
                           ),
                           const SizedBox(height: 16),
                           TextField(
                             key: const Key('passwordField'),
                             controller: _passwordController,
                             enabled: !context
-                                .watch<AuthCubit>()
+                                .watch<AuthBloc>()
                                 .state
                                 .isSubmitting,
                             autofillHints: const [AutofillHints.password],
                             obscureText: true,
-                            onSubmitted: (_) =>
-                                context.read<AuthCubit>().login(),
+                            onSubmitted: (_) => context.read<AuthBloc>().add(
+                              const AuthLoginSubmitted(),
+                            ),
                             decoration: InputDecoration(
                               labelText: context.l10n.passwordLabel,
                               prefixIcon: const Icon(Icons.lock_outline),
                             ),
-                            onChanged: context
-                                .read<AuthCubit>()
-                                .passwordChanged,
+                            onChanged: (password) => context
+                                .read<AuthBloc>()
+                                .add(AuthPasswordChanged(password)),
                           ),
                           const SizedBox(height: 12),
                           const _AuthError(),
@@ -125,10 +131,12 @@ class _LoginViewState extends State<LoginView> {
                           FilledButton(
                             key: const Key('signInButton'),
                             onPressed:
-                                context.watch<AuthCubit>().state.isSubmitting
+                                context.watch<AuthBloc>().state.isSubmitting
                                 ? null
-                                : context.read<AuthCubit>().login,
-                            child: context.watch<AuthCubit>().state.isSubmitting
+                                : () => context.read<AuthBloc>().add(
+                                    const AuthLoginSubmitted(),
+                                  ),
+                            child: context.watch<AuthBloc>().state.isSubmitting
                                 ? const SizedBox.square(
                                     dimension: 20,
                                     child: CircularProgressIndicator(
@@ -165,7 +173,7 @@ class _AuthError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final failure = context.select((AuthCubit cubit) => cubit.state.failure);
+    final failure = context.select((AuthBloc bloc) => bloc.state.failure);
     final message = switch (failure) {
       null => null,
       FailureType.validation => context.l10n.requiredCredentials,

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -16,10 +16,10 @@ void main() {
     when(() => repository.sessionEmail).thenReturn(null);
   });
 
-  blocTest<AuthCubit, AuthState>(
+  blocTest<AuthBloc, AuthState>(
     'empty credentials fail without calling the repository',
-    build: () => AuthCubit(repository),
-    act: (cubit) => cubit.login(),
+    build: () => AuthBloc(repository),
+    act: (bloc) => bloc.add(const AuthLoginSubmitted()),
     expect: () => [const AuthState(failure: FailureType.validation)],
     verify: (_) => verifyNever(
       () => repository.login(
@@ -29,8 +29,8 @@ void main() {
     ),
   );
 
-  blocTest<AuthCubit, AuthState>(
-    'successful login trims email, clears password, and authenticates',
+  blocTest<AuthBloc, AuthState>(
+    'successful login emits a single dashboard effect',
     setUp: () {
       when(
         () => repository.login(
@@ -39,11 +39,12 @@ void main() {
         ),
       ).thenAnswer((_) async => const ApiSuccess('learner@example.com'));
     },
-    build: () => AuthCubit(repository),
-    act: (cubit) async {
-      cubit.emailChanged('  learner@example.com  ');
-      cubit.passwordChanged('playground');
-      await cubit.login();
+    build: () => AuthBloc(repository),
+    act: (bloc) {
+      bloc
+        ..add(const AuthEmailChanged('  learner@example.com  '))
+        ..add(const AuthPasswordChanged('playground'))
+        ..add(const AuthLoginSubmitted());
     },
     skip: 2,
     expect: () => [
@@ -52,10 +53,14 @@ void main() {
         password: 'playground',
         isSubmitting: true,
       ),
-      const AuthState(
-        email: 'learner@example.com',
-        status: AuthStatus.authenticated,
-      ),
+      isA<AuthState>()
+          .having((state) => state.email, 'email', 'learner@example.com')
+          .having((state) => state.status, 'status', AuthStatus.authenticated)
+          .having(
+            (state) => state.effect?.peekContent(),
+            'effect',
+            isA<AuthOpenDashboard>(),
+          ),
     ],
   );
 }
