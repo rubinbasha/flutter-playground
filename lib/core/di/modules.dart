@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_playground/config/app_config.dart';
 import 'package:flutter_playground/core/network/auth_token_interceptor.dart';
+import 'package:flutter_playground/features/account/presentation/account_screen.dart';
 import 'package:flutter_playground/features/auth/data/auth_repository.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
+import 'package:flutter_playground/features/auth/presentation/authenticated_shell.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
@@ -71,16 +73,35 @@ abstract class RouterModule {
           builder: (context, state) =>
               LoginScreen(cubit: AuthCubit(authRepository)),
         ),
-        GoRoute(
-          path: DashboardScreen.route,
-          builder: (context, state) => DashboardScreen(
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) => AuthenticatedShell(
+            navigationShell: navigationShell,
             authCubit: AuthCubit(authRepository),
-            checklistListCubit: ChecklistListCubit(
-              checklistRepository,
-              checklistUpdatesRepository,
-              favoritesStore,
-            )..load(),
           ),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: DashboardScreen.route,
+                  builder: (context, state) => DashboardScreen(
+                    checklistListCubit: ChecklistListCubit(
+                      checklistRepository,
+                      checklistUpdatesRepository,
+                      favoritesStore,
+                    )..load(),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AccountScreen.route,
+                  builder: (context, state) => const AccountScreen(),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           path: ChecklistDetailsScreen.route,
