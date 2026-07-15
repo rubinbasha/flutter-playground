@@ -20,6 +20,7 @@ void main() {
               items: [ChecklistSummary(id: 'safety', name: 'Safety walk')],
             ),
             onRetry: () {},
+            onToggleFavorite: (_) {},
             onSelected: (id) => selectedId = id,
           ),
         ),

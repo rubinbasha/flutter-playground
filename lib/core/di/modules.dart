@@ -7,6 +7,7 @@ import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
+import 'package:flutter_playground/features/checklists/data/favorites_store.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
@@ -56,6 +57,7 @@ abstract class RouterModule {
   GoRouter router(
     AuthRepository authRepository,
     ChecklistRepository checklistRepository,
+    FavoritesStore favoritesStore,
   ) {
     return GoRouter(
       initialLocation: authRepository.isLoggedIn
@@ -71,7 +73,10 @@ abstract class RouterModule {
           path: DashboardScreen.route,
           builder: (context, state) => DashboardScreen(
             authCubit: AuthCubit(authRepository),
-            checklistListCubit: ChecklistListCubit(checklistRepository)..load(),
+            checklistListCubit: ChecklistListCubit(
+              checklistRepository,
+              favoritesStore,
+            )..load(),
           ),
         ),
         GoRoute(

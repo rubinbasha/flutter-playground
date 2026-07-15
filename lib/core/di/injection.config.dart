@@ -21,6 +21,7 @@ import '../../features/auth/data/auth_service.dart' as _i903;
 import '../../features/auth/data/token_storage.dart' as _i280;
 import '../../features/checklists/data/checklist_repository.dart' as _i442;
 import '../../features/checklists/data/checklist_service.dart' as _i856;
+import '../../features/checklists/data/favorites_store.dart' as _i337;
 import '../network/auth_token_interceptor.dart' as _i743;
 import 'modules.dart' as _i738;
 
@@ -48,6 +49,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i280.TokenStorage>(
       () => _i280.TokenStorage(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i337.FavoritesStore>(
+      () => _i337.FavoritesStore(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i903.AuthService>(
       () => _i903.FakeAuthService(),
@@ -83,6 +87,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => routerModule.router(
         gh<_i726.AuthRepository>(),
         gh<_i442.ChecklistRepository>(),
+        gh<_i337.FavoritesStore>(),
       ),
     );
     return this;

@@ -32,6 +32,8 @@
   },
   "checklistsTitle": "Checklists",
   "noChecklists": "No checklists are available.",
+  "addFavorite": "Add to favorites",
+  "removeFavorite": "Remove from favorites",
   "retry": "Try again",
   "checklistDetailsTitle": "Checklist details",
   "checklistNotFound": "This checklist could not be found.",
