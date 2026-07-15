@@ -1,0 +1,32 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flutter Playground",
+  "signInTitle": "Learn with a real app flow",
+  "signInSubtitle": "Start with authentication on main, then explore one focused concept per branch.",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "signIn": "Sign in",
+  "demoCredentials": "Demo: {email} / {password}",
+  "@demoCredentials": {
+    "placeholders": {
+      "email": {"type": "String"},
+      "password": {"type": "String"}
+    }
+  },
+  "requiredCredentials": "Email and password are required.",
+  "invalidCredentials": "Those credentials are not valid.",
+  "invalidServerResponse": "The server returned an incomplete response.",
+  "networkError": "Check your connection and try again.",
+  "unknownError": "Something went wrong. Please try again.",
+  "signOut": "Sign out",
+  "dashboardTitle": "Playground",
+  "dashboardHeadline": "Authentication foundation complete",
+  "dashboardBody": "This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.",
+  "sessionStored": "Session stored locally",
+  "signedInAs": "Signed in as {email}",
+  "@signedInAs": {
+    "placeholders": {
+      "email": {"type": "String"}
+    }
+  }
+}
