@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_playground/config/app_config.dart';
 import 'package:flutter_playground/core/network/auth_token_interceptor.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -58,12 +58,12 @@ abstract class RouterModule {
         GoRoute(
           path: LoginScreen.route,
           builder: (context, state) =>
-              LoginScreen(bloc: AuthBloc(authRepository)),
+              LoginScreen(cubit: AuthCubit(authRepository)),
         ),
         GoRoute(
           path: DashboardScreen.route,
           builder: (context, state) =>
-              DashboardScreen(bloc: AuthBloc(authRepository)),
+              DashboardScreen(cubit: AuthCubit(authRepository)),
         ),
       ],
     );

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({required this.bloc, super.key});
+  const DashboardScreen({required this.cubit, super.key});
 
   static const String route = '/dashboard';
 
-  final AuthBloc bloc;
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(value: bloc, child: const DashboardView());
+    return BlocProvider.value(value: cubit, child: const DashboardView());
   }
 }
 
@@ -23,7 +23,7 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
         switch (state.effect?.getContentIfNotConsumed()) {
@@ -40,11 +40,9 @@ class DashboardView extends StatelessWidget {
             IconButton(
               key: const Key('signOutButton'),
               tooltip: context.l10n.signOut,
-              onPressed: context.watch<AuthBloc>().state.isSubmitting
+              onPressed: context.watch<AuthCubit>().state.isSubmitting
                   ? null
-                  : () => context.read<AuthBloc>().add(
-                      const AuthLogoutRequested(),
-                    ),
+                  : context.read<AuthCubit>().logout,
               icon: const Icon(Icons.logout),
             ),
           ],
@@ -68,7 +66,7 @@ class DashboardView extends StatelessWidget {
                     title: Text(context.l10n.sessionStored),
                     subtitle: Text(
                       context.l10n.signedInAs(
-                        context.watch<AuthBloc>().state.email,
+                        context.watch<AuthCubit>().state.email,
                       ),
                     ),
                   ),

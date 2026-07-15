@@ -20,8 +20,8 @@ runnable. Combined branches demonstrate how the pieces interact.
 
 | Branch | Learning focus |
 | --- | --- |
-| `main` | Auth API boundary, MVI Bloc, routing, DI, token persistence |
-| `mvi` | Immutable feature contracts, checklist list/details, layered tests |
+| `main` | Auth API boundary, MVVM Cubit, routing, DI, token persistence |
+| `mvi` | MVVM checklist list/details, immutable state, layered tests |
 | `websocket` | Lifecycle-safe realtime updates |
 | `local-cache` | Offline checklist fallback |
 | `paging` | Incremental loading and list state |
@@ -40,11 +40,11 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for the graph and
 
 Feature directories own transport details, models, state, and UI. Repository
 classes live separately in `lib/core/repositories/`, where they validate and
-coordinate feature data for Blocs.
+coordinate feature data for Cubits.
 
-Screen logic follows explicit MVI contracts: widgets send typed intents to a
-Bloc, render immutable state, and consume one-off typed effects through
-`BlocListener`. See [docs/mvi-conventions.md](docs/mvi-conventions.md).
+Screen logic follows MVVM: widgets are Views, Cubits are ViewModels, and
+immutable state drives rendering. One-off typed effects are consumed through
+`BlocListener`. See [docs/mvvm-conventions.md](docs/mvvm-conventions.md).
 
 ## Run
 

@@ -3,20 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/auth/data/auth_service.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({required this.bloc, super.key});
+  const LoginScreen({required this.cubit, super.key});
 
   static const String route = '/login';
 
-  final AuthBloc bloc;
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(value: bloc, child: const LoginView());
+    return BlocProvider.value(value: cubit, child: const LoginView());
   }
 }
 
@@ -34,8 +34,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    final bloc = context.read<AuthBloc>();
-    _emailController = TextEditingController(text: bloc.state.email);
+    final cubit = context.read<AuthCubit>();
+    _emailController = TextEditingController(text: cubit.state.email);
     _passwordController = TextEditingController();
   }
 
@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
         switch (state.effect?.getContentIfNotConsumed()) {
@@ -90,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
                             key: const Key('emailField'),
                             controller: _emailController,
                             enabled: !context
-                                .watch<AuthBloc>()
+                                .watch<AuthCubit>()
                                 .state
                                 .isSubmitting,
                             autofillHints: const [AutofillHints.email],
@@ -100,30 +100,27 @@ class _LoginViewState extends State<LoginView> {
                               labelText: context.l10n.emailLabel,
                               prefixIcon: const Icon(Icons.email_outlined),
                             ),
-                            onChanged: (email) => context.read<AuthBloc>().add(
-                              AuthEmailChanged(email),
-                            ),
+                            onChanged: context.read<AuthCubit>().emailChanged,
                           ),
                           const SizedBox(height: 16),
                           TextField(
                             key: const Key('passwordField'),
                             controller: _passwordController,
                             enabled: !context
-                                .watch<AuthBloc>()
+                                .watch<AuthCubit>()
                                 .state
                                 .isSubmitting,
                             autofillHints: const [AutofillHints.password],
                             obscureText: true,
-                            onSubmitted: (_) => context.read<AuthBloc>().add(
-                              const AuthLoginSubmitted(),
-                            ),
+                            onSubmitted: (_) =>
+                                context.read<AuthCubit>().login(),
                             decoration: InputDecoration(
                               labelText: context.l10n.passwordLabel,
                               prefixIcon: const Icon(Icons.lock_outline),
                             ),
-                            onChanged: (password) => context
-                                .read<AuthBloc>()
-                                .add(AuthPasswordChanged(password)),
+                            onChanged: context
+                                .read<AuthCubit>()
+                                .passwordChanged,
                           ),
                           const SizedBox(height: 12),
                           const _AuthError(),
@@ -131,12 +128,10 @@ class _LoginViewState extends State<LoginView> {
                           FilledButton(
                             key: const Key('signInButton'),
                             onPressed:
-                                context.watch<AuthBloc>().state.isSubmitting
+                                context.watch<AuthCubit>().state.isSubmitting
                                 ? null
-                                : () => context.read<AuthBloc>().add(
-                                    const AuthLoginSubmitted(),
-                                  ),
-                            child: context.watch<AuthBloc>().state.isSubmitting
+                                : context.read<AuthCubit>().login,
+                            child: context.watch<AuthCubit>().state.isSubmitting
                                 ? const SizedBox.square(
                                     dimension: 20,
                                     child: CircularProgressIndicator(
@@ -173,7 +168,7 @@ class _AuthError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final failure = context.select((AuthBloc bloc) => bloc.state.failure);
+    final failure = context.select((AuthCubit cubit) => cubit.state.failure);
     final message = switch (failure) {
       null => null,
       FailureType.validation => context.l10n.requiredCredentials,

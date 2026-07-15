@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -16,10 +16,10 @@ void main() {
     when(() => repository.sessionEmail).thenReturn(null);
   });
 
-  blocTest<AuthBloc, AuthState>(
+  blocTest<AuthCubit, AuthState>(
     'empty credentials fail without calling the repository',
-    build: () => AuthBloc(repository),
-    act: (bloc) => bloc.add(const AuthLoginSubmitted()),
+    build: () => AuthCubit(repository),
+    act: (cubit) => cubit.login(),
     expect: () => [const AuthState(failure: FailureType.validation)],
     verify: (_) => verifyNever(
       () => repository.login(
@@ -29,7 +29,7 @@ void main() {
     ),
   );
 
-  blocTest<AuthBloc, AuthState>(
+  blocTest<AuthCubit, AuthState>(
     'successful login emits a single dashboard effect',
     setUp: () {
       when(
@@ -39,12 +39,12 @@ void main() {
         ),
       ).thenAnswer((_) async => const ApiSuccess('learner@example.com'));
     },
-    build: () => AuthBloc(repository),
-    act: (bloc) {
-      bloc
-        ..add(const AuthEmailChanged('  learner@example.com  '))
-        ..add(const AuthPasswordChanged('playground'))
-        ..add(const AuthLoginSubmitted());
+    build: () => AuthCubit(repository),
+    act: (cubit) async {
+      cubit
+        ..emailChanged('  learner@example.com  ')
+        ..passwordChanged('playground');
+      await cubit.login();
     },
     skip: 2,
     expect: () => [
