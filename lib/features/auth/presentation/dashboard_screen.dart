@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
 import 'package:flutter_playground/core/widgets/page_state_view.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
+import 'package:flutter_playground/features/auth/presentation/auth_bloc.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
@@ -11,21 +11,21 @@ import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
-    required this.authCubit,
+    required this.authBloc,
     required this.checklistListCubit,
     super.key,
   });
 
   static const String route = '/dashboard';
 
-  final AuthCubit authCubit;
+  final AuthBloc authBloc;
   final ChecklistListCubit checklistListCubit;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: authCubit),
+        BlocProvider.value(value: authBloc),
         BlocProvider.value(value: checklistListCubit),
       ],
       child: const DashboardView(),
@@ -38,11 +38,14 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) => previous.effect != current.effect,
       listener: (context, state) {
-        if (state.status == AuthStatus.unauthenticated) {
-          context.go(LoginScreen.route);
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case AuthOpenLogin():
+            context.go(LoginScreen.route);
+          case _:
+            break;
         }
       },
       child: Scaffold(
@@ -52,9 +55,11 @@ class DashboardView extends StatelessWidget {
             IconButton(
               key: const Key('signOutButton'),
               tooltip: context.l10n.signOut,
-              onPressed: context.watch<AuthCubit>().state.isSubmitting
+              onPressed: context.watch<AuthBloc>().state.isSubmitting
                   ? null
-                  : context.read<AuthCubit>().logout,
+                  : () => context.read<AuthBloc>().add(
+                      const AuthLogoutRequested(),
+                    ),
               icon: const Icon(Icons.logout),
             ),
           ],
@@ -64,7 +69,7 @@ class DashboardView extends StatelessWidget {
             builder: (context, state) {
               return ChecklistListContent(
                 state: state,
-                email: context.watch<AuthCubit>().state.email,
+                email: context.watch<AuthBloc>().state.email,
                 onRetry: context.read<ChecklistListCubit>().load,
                 onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
               );
