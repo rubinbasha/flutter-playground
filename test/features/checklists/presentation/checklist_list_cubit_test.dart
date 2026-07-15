@@ -51,4 +51,25 @@ void main() {
       expect(cubit.state.query, 'fleet');
     },
   );
+
+  test('failed refresh preserves existing content', () async {
+    final repository = _MockChecklistRepository();
+    var callCount = 0;
+    when(repository.getChecklists).thenAnswer((_) async {
+      callCount += 1;
+      if (callCount == 1) {
+        return ApiSuccess(items);
+      }
+      return const ApiFailure(type: FailureType.network);
+    });
+    final cubit = ChecklistListCubit(repository);
+    addTearDown(cubit.close);
+
+    await cubit.load();
+    await cubit.refresh();
+
+    expect(cubit.state.items, items);
+    expect(cubit.state.failure, FailureType.network);
+    expect(cubit.state.isRefreshing, isFalse);
+  });
 }

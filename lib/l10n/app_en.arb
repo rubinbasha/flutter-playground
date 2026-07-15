@@ -34,6 +34,7 @@
   "searchChecklists": "Search checklists",
   "noChecklists": "No checklists are available.",
   "retry": "Try again",
+  "refreshFailed": "Refresh failed. Existing content is still available.",
   "checklistDetailsTitle": "Checklist details",
   "checklistNotFound": "This checklist could not be found.",
   "categoryLabel": "Category",

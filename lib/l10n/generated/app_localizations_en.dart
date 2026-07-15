@@ -86,6 +86,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Try again';
 
   @override
+  String get refreshFailed =>
+      'Refresh failed. Existing content is still available.';
+
+  @override
   String get checklistDetailsTitle => 'Checklist details';
 
   @override

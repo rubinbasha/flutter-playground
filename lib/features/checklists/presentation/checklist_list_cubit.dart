@@ -16,6 +16,7 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default(ChecklistListStatus.initial) ChecklistListStatus status,
     @Default(<ChecklistSummary>[]) List<ChecklistSummary> items,
     @Default('') String query,
+    @Default(false) bool isRefreshing,
     FailureType? failure,
   }) = _ChecklistListState;
 }
@@ -27,11 +28,21 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
   List<ChecklistSummary> _allItems = const [];
   Timer? _searchDebounce;
 
-  Future<void> load() async {
-    if (state.status == ChecklistListStatus.loading) {
+  Future<void> load() => _fetch(isRefresh: false);
+
+  Future<void> refresh() => _fetch(isRefresh: true);
+
+  Future<void> _fetch({required bool isRefresh}) async {
+    if (state.status == ChecklistListStatus.loading || state.isRefreshing) {
       return;
     }
-    emit(state.copyWith(status: ChecklistListStatus.loading, failure: null));
+    emit(
+      state.copyWith(
+        status: isRefresh ? state.status : ChecklistListStatus.loading,
+        isRefreshing: isRefresh,
+        failure: null,
+      ),
+    );
     final result = await _repository.getChecklists();
     switch (result) {
       case ApiSuccess<List<ChecklistSummary>>(:final data):
@@ -40,11 +51,17 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
           state.copyWith(
             status: ChecklistListStatus.success,
             items: _filter(state.query),
+            isRefreshing: false,
+            failure: null,
           ),
         );
       case ApiFailure<List<ChecklistSummary>>(:final type):
         emit(
-          state.copyWith(status: ChecklistListStatus.success, failure: type),
+          state.copyWith(
+            status: ChecklistListStatus.success,
+            isRefreshing: false,
+            failure: type,
+          ),
         );
     }
   }

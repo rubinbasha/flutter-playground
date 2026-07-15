@@ -232,6 +232,12 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get retry;
 
+  /// No description provided for @refreshFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh failed. Existing content is still available.'**
+  String get refreshFailed;
+
   /// No description provided for @checklistDetailsTitle.
   ///
   /// In en, this message translates to:
