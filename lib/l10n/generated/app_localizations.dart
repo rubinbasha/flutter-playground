@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// **'This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.'**
   String get dashboardBody;
 
+  /// No description provided for @checklistDashboardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.'**
+  String get checklistDashboardBody;
+
   /// No description provided for @sessionStored.
   ///
   /// In en, this message translates to:
@@ -201,6 +207,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signed in as {email}'**
   String signedInAs(String email);
+
+  /// No description provided for @checklistsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklists'**
+  String get checklistsTitle;
+
+  /// No description provided for @noChecklists.
+  ///
+  /// In en, this message translates to:
+  /// **'No checklists are available.'**
+  String get noChecklists;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// No description provided for @checklistDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist details'**
+  String get checklistDetailsTitle;
+
+  /// No description provided for @checklistNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This checklist could not be found.'**
+  String get checklistNotFound;
+
+  /// No description provided for @categoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get categoryLabel;
+
+  /// No description provided for @appGroupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'App group'**
+  String get appGroupLabel;
+
+  /// No description provided for @createdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get createdLabel;
+
+  /// No description provided for @updatedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated'**
+  String get updatedLabel;
+
+  /// No description provided for @notAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get notAvailable;
 }
 
 class _AppLocalizationsDelegate

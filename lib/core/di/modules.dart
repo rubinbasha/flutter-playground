@@ -6,6 +6,10 @@ import 'package:flutter_playground/features/auth/data/auth_repository.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
+import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
+import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
+import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
+import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -49,7 +53,10 @@ abstract class NetworkModule {
 @module
 abstract class RouterModule {
   @lazySingleton
-  GoRouter router(AuthRepository authRepository) {
+  GoRouter router(
+    AuthRepository authRepository,
+    ChecklistRepository checklistRepository,
+  ) {
     return GoRouter(
       initialLocation: authRepository.isLoggedIn
           ? DashboardScreen.route
@@ -62,8 +69,20 @@ abstract class RouterModule {
         ),
         GoRoute(
           path: DashboardScreen.route,
-          builder: (context, state) =>
-              DashboardScreen(cubit: AuthCubit(authRepository)),
+          builder: (context, state) => DashboardScreen(
+            authCubit: AuthCubit(authRepository),
+            checklistListCubit: ChecklistListCubit(checklistRepository)..load(),
+          ),
+        ),
+        GoRoute(
+          path: ChecklistDetailsScreen.route,
+          builder: (context, state) {
+            final checklistId = state.pathParameters['checklistId'] ?? '';
+            return ChecklistDetailsScreen(
+              cubit: ChecklistDetailsCubit(checklistRepository, checklistId)
+                ..load(),
+            );
+          },
         ),
       ],
     );

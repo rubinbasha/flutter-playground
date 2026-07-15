@@ -22,11 +22,22 @@
   "dashboardTitle": "Playground",
   "dashboardHeadline": "Authentication foundation complete",
   "dashboardBody": "This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.",
+  "checklistDashboardBody": "Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.",
   "sessionStored": "Session stored locally",
   "signedInAs": "Signed in as {email}",
   "@signedInAs": {
     "placeholders": {
       "email": {"type": "String"}
     }
-  }
+  },
+  "checklistsTitle": "Checklists",
+  "noChecklists": "No checklists are available.",
+  "retry": "Try again",
+  "checklistDetailsTitle": "Checklist details",
+  "checklistNotFound": "This checklist could not be found.",
+  "categoryLabel": "Category",
+  "appGroupLabel": "App group",
+  "createdLabel": "Created",
+  "updatedLabel": "Updated",
+  "notAvailable": "Not available"
 }

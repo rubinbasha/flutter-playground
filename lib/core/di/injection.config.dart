@@ -19,6 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import '../../features/auth/data/auth_repository.dart' as _i726;
 import '../../features/auth/data/auth_service.dart' as _i903;
 import '../../features/auth/data/token_storage.dart' as _i280;
+import '../../features/checklists/data/checklist_repository.dart' as _i442;
+import '../../features/checklists/data/checklist_service.dart' as _i856;
 import '../network/auth_token_interceptor.dart' as _i743;
 import 'modules.dart' as _i738;
 
@@ -40,6 +42,10 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i528.PrettyDioLogger>(() => networkModule.logger);
+    gh.lazySingleton<_i856.ChecklistService>(
+      () => _i856.FakeChecklistService(),
+      registerFor: {_demo},
+    );
     gh.lazySingleton<_i280.TokenStorage>(
       () => _i280.TokenStorage(gh<_i460.SharedPreferences>()),
     );
@@ -60,6 +66,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i903.DioAuthService(gh<_i361.Dio>()),
       registerFor: {_production},
     );
+    gh.lazySingleton<_i856.ChecklistService>(
+      () => _i856.DioChecklistService(gh<_i361.Dio>()),
+      registerFor: {_production},
+    );
+    gh.lazySingleton<_i442.ChecklistRepository>(
+      () => _i442.ChecklistRepository(gh<_i856.ChecklistService>()),
+    );
     gh.lazySingleton<_i726.AuthRepository>(
       () => _i726.AuthRepository(
         gh<_i903.AuthService>(),
@@ -67,7 +80,10 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i583.GoRouter>(
-      () => routerModule.router(gh<_i726.AuthRepository>()),
+      () => routerModule.router(
+        gh<_i726.AuthRepository>(),
+        gh<_i442.ChecklistRepository>(),
+      ),
     );
     return this;
   }

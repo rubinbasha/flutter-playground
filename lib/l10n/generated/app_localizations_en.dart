@@ -62,10 +62,44 @@ class AppLocalizationsEn extends AppLocalizations {
       'This branch demonstrates routing, Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.';
 
   @override
+  String get checklistDashboardBody =>
+      'Checklist data now flows from a guarded API boundary through repositories and immutable Cubit state into stateless widgets.';
+
+  @override
   String get sessionStored => 'Session stored locally';
 
   @override
   String signedInAs(String email) {
     return 'Signed in as $email';
   }
+
+  @override
+  String get checklistsTitle => 'Checklists';
+
+  @override
+  String get noChecklists => 'No checklists are available.';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get checklistDetailsTitle => 'Checklist details';
+
+  @override
+  String get checklistNotFound => 'This checklist could not be found.';
+
+  @override
+  String get categoryLabel => 'Category';
+
+  @override
+  String get appGroupLabel => 'App group';
+
+  @override
+  String get createdLabel => 'Created';
+
+  @override
+  String get updatedLabel => 'Updated';
+
+  @override
+  String get notAvailable => 'Not available';
 }

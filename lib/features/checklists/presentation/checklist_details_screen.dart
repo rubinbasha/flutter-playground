@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
+import 'package:flutter_playground/core/widgets/page_state_view.dart';
+import 'package:flutter_playground/features/checklists/domain/checklist.dart';
+import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
+
+class ChecklistDetailsScreen extends StatelessWidget {
+  const ChecklistDetailsScreen({required this.cubit, super.key});
+
+  static const String route = '/dashboard/checklists/:checklistId';
+
+  static String path(String checklistId) =>
+      '/dashboard/checklists/${Uri.encodeComponent(checklistId)}';
+
+  final ChecklistDetailsCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: cubit,
+      child: const ChecklistDetailsView(),
+    );
+  }
+}
+
+class ChecklistDetailsView extends StatelessWidget {
+  const ChecklistDetailsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(context.l10n.checklistDetailsTitle)),
+      body: SafeArea(
+        child: BlocBuilder<ChecklistDetailsCubit, ChecklistDetailsState>(
+          builder: (context, state) {
+            return PageStateView(
+              isLoading:
+                  state.status == ChecklistDetailsStatus.loading ||
+                  state.status == ChecklistDetailsStatus.initial,
+              isEmpty: state.details == null,
+              failure: state.failure,
+              onRetry: context.read<ChecklistDetailsCubit>().load,
+              emptyMessage: context.l10n.checklistNotFound,
+              child: state.details == null
+                  ? const SizedBox.shrink()
+                  : _ChecklistDetailsContent(details: state.details!),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _ChecklistDetailsContent extends StatelessWidget {
+  const _ChecklistDetailsContent({required this.details});
+
+  final ChecklistDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        Text(details.name, style: Theme.of(context).textTheme.headlineMedium),
+        const SizedBox(height: 16),
+        _DetailRow(
+          icon: Icons.category_outlined,
+          label: context.l10n.categoryLabel,
+          value: details.categoryName,
+        ),
+        _DetailRow(
+          icon: Icons.groups_outlined,
+          label: context.l10n.appGroupLabel,
+          value: details.appGroupName,
+        ),
+        _DetailRow(
+          icon: Icons.event_outlined,
+          label: context.l10n.createdLabel,
+          value: details.dateCreated,
+        ),
+        _DetailRow(
+          icon: Icons.update_outlined,
+          label: context.l10n.updatedLabel,
+          value: details.lastUpdated,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          details.description ?? context.l10n.notAvailable,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      ],
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String? value;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(icon),
+      title: Text(label),
+      subtitle: Text(value ?? context.l10n.notAvailable),
+    );
+  }
+}
