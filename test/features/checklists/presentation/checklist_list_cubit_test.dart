@@ -26,13 +26,63 @@ void main() {
     'load exposes repository data through immutable state',
     build: () {
       final repository = _MockChecklistRepository();
-      when(repository.getChecklists).thenAnswer((_) async => ApiSuccess(items));
+      when(repository.getChecklists).thenAnswer(
+        (_) async => ApiSuccess(ChecklistPage(items: items, totalCount: 1)),
+      );
       return ChecklistListCubit(repository);
     },
     act: (cubit) => cubit.load(),
     expect: () => [
       const ChecklistListState(status: ChecklistListStatus.loading),
-      ChecklistListState(status: ChecklistListStatus.success, items: items),
+      ChecklistListState(
+        status: ChecklistListStatus.success,
+        items: items,
+        hasMore: false,
+      ),
+    ],
+  );
+
+  blocTest<ChecklistListCubit, ChecklistListState>(
+    'loadNextPage appends data and stops at totalCount',
+    build: () {
+      final repository = _MockChecklistRepository();
+      when(repository.getChecklists).thenAnswer(
+        (_) async => const ApiSuccess(
+          ChecklistPage(
+            items: [ChecklistSummary(id: 'one', name: 'One')],
+            totalCount: 2,
+          ),
+        ),
+      );
+      when(() => repository.getChecklists(offset: 1)).thenAnswer(
+        (_) async => const ApiSuccess(
+          ChecklistPage(
+            items: [ChecklistSummary(id: 'two', name: 'Two')],
+            totalCount: 2,
+          ),
+        ),
+      );
+      return ChecklistListCubit(repository);
+    },
+    act: (cubit) async {
+      await cubit.load();
+      await cubit.loadNextPage();
+    },
+    skip: 2,
+    expect: () => [
+      const ChecklistListState(
+        status: ChecklistListStatus.success,
+        items: [ChecklistSummary(id: 'one', name: 'One')],
+        isLoadingMore: true,
+      ),
+      const ChecklistListState(
+        status: ChecklistListStatus.success,
+        items: [
+          ChecklistSummary(id: 'one', name: 'One'),
+          ChecklistSummary(id: 'two', name: 'Two'),
+        ],
+        hasMore: false,
+      ),
     ],
   );
 
@@ -41,7 +91,9 @@ void main() {
     build: () {
       final repository = _MockChecklistRepository();
       final updatesRepository = _MockChecklistUpdatesRepository();
-      when(repository.getChecklists).thenAnswer((_) async => ApiSuccess(items));
+      when(repository.getChecklists).thenAnswer(
+        (_) async => ApiSuccess(ChecklistPage(items: items, totalCount: 1)),
+      );
       when(updatesRepository.watchItems).thenAnswer(
         (_) => Stream.value(
           const ChecklistSummary(id: 'id', name: 'Updated live'),
@@ -53,10 +105,15 @@ void main() {
     wait: const Duration(milliseconds: 10),
     expect: () => [
       const ChecklistListState(status: ChecklistListStatus.loading),
-      ChecklistListState(status: ChecklistListStatus.success, items: items),
+      ChecklistListState(
+        status: ChecklistListStatus.success,
+        items: items,
+        hasMore: false,
+      ),
       const ChecklistListState(
         status: ChecklistListStatus.success,
         items: [ChecklistSummary(id: 'id', name: 'Updated live')],
+        hasMore: false,
       ),
     ],
   );
@@ -66,14 +123,19 @@ void main() {
     () async {
       final repository = _MockChecklistRepository();
       when(repository.getChecklists).thenAnswer(
-        (_) async => const ApiSuccess([
-          ChecklistSummary(id: 'safety', name: 'Safety walk'),
-          ChecklistSummary(
-            id: 'vehicle',
-            name: 'Vehicle handover',
-            categoryName: 'Fleet',
+        (_) async => const ApiSuccess(
+          ChecklistPage(
+            items: [
+              ChecklistSummary(id: 'safety', name: 'Safety walk'),
+              ChecklistSummary(
+                id: 'vehicle',
+                name: 'Vehicle handover',
+                categoryName: 'Fleet',
+              ),
+            ],
+            totalCount: 2,
           ),
-        ]),
+        ),
       );
       final cubit = ChecklistListCubit(repository);
       addTearDown(cubit.close);
@@ -93,7 +155,7 @@ void main() {
     when(repository.getChecklists).thenAnswer((_) async {
       callCount += 1;
       if (callCount == 1) {
-        return ApiSuccess(items);
+        return ApiSuccess(ChecklistPage(items: items, totalCount: 1));
       }
       return const ApiFailure(type: FailureType.network);
     });

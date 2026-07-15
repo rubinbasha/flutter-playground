@@ -15,11 +15,14 @@ class ChecklistRepository {
   final ChecklistService _service;
   final ChecklistCache _cache;
 
-  Future<ApiResult<List<ChecklistSummary>>> getChecklists() async {
+  Future<ApiResult<ChecklistPage>> getChecklists({
+    int limit = defaultLimit,
+    int offset = 0,
+  }) async {
     try {
       final response = await _service.getChecklists(
-        limit: defaultLimit,
-        offset: 0,
+        limit: limit,
+        offset: offset,
       );
       final items =
           response.data
@@ -27,19 +30,28 @@ class ChecklistRepository {
               .whereType<ChecklistSummary>()
               .toList(growable: false) ??
           const <ChecklistSummary>[];
-      try {
-        await _cache.save(items);
-      } on Exception {
-        // Caching is supplemental; fresh API data remains usable.
+      if (offset == 0) {
+        try {
+          await _cache.save(items);
+        } on Exception {
+          // Caching is supplemental; fresh API data remains usable.
+        }
       }
-      return ApiSuccess(items);
+      return ApiSuccess(
+        ChecklistPage(
+          items: items,
+          totalCount: response.totalCount ?? offset + items.length,
+        ),
+      );
     } on DioException catch (error) {
-      return _cachedOr(
+      return _cachedPageOr(
         ApiFailure(type: FailureType.network, debugMessage: error.message),
+        offset: offset,
       );
     } on Exception catch (error) {
-      return _cachedOr(
+      return _cachedPageOr(
         ApiFailure(type: FailureType.unknown, debugMessage: error.toString()),
+        offset: offset,
       );
     }
   }
@@ -65,11 +77,14 @@ class ChecklistRepository {
     }
   }
 
-  ApiResult<List<ChecklistSummary>> _cachedOr(
-    ApiFailure<List<ChecklistSummary>> failure,
-  ) {
-    final cached = _cache.load();
-    return cached == null ? failure : ApiSuccess(cached);
+  ApiResult<ChecklistPage> _cachedPageOr(
+    ApiFailure<ChecklistPage> failure, {
+    required int offset,
+  }) {
+    final cached = offset == 0 ? _cache.load() : null;
+    return cached == null
+        ? failure
+        : ApiSuccess(ChecklistPage(items: cached, totalCount: cached.length));
   }
 
   ChecklistSummary? _toSummary(ChecklistItemDto dto) {

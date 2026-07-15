@@ -23,6 +23,7 @@ void main() {
             onRefresh: () async {},
             onQueryChanged: (_) {},
             onToggleFavorite: (_) {},
+            onLoadMore: () {},
             onSelected: (id) => selectedId = id,
           ),
         ),

@@ -20,6 +20,8 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default(<String>{}) Set<String> favoriteIds,
     @Default('') String query,
     @Default(false) bool isRefreshing,
+    @Default(false) bool isLoadingMore,
+    @Default(true) bool hasMore,
     FailureType? failure,
   }) = _ChecklistListState;
 }
@@ -59,13 +61,15 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
     );
     final result = await _repository.getChecklists();
     switch (result) {
-      case ApiSuccess<List<ChecklistSummary>>(:final data):
-        _allItems = data;
+      case ApiSuccess<ChecklistPage>(:final data):
+        _allItems = data.items;
         emit(
           state.copyWith(
             status: ChecklistListStatus.success,
             items: _filter(state.query),
             isRefreshing: false,
+            isLoadingMore: false,
+            hasMore: _allItems.length < data.totalCount,
             failure: null,
           ),
         );
@@ -73,7 +77,7 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
           _applyUpdate,
           onError: (Object _) {},
         );
-      case ApiFailure<List<ChecklistSummary>>(:final type):
+      case ApiFailure<ChecklistPage>(:final type):
         emit(
           state.copyWith(
             status: ChecklistListStatus.success,
@@ -81,6 +85,27 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
             failure: type,
           ),
         );
+    }
+  }
+
+  Future<void> loadNextPage() async {
+    if (!state.hasMore || state.isLoadingMore || state.isRefreshing) {
+      return;
+    }
+    emit(state.copyWith(isLoadingMore: true, failure: null));
+    final result = await _repository.getChecklists(offset: _allItems.length);
+    switch (result) {
+      case ApiSuccess<ChecklistPage>(:final data):
+        _allItems = [..._allItems, ...data.items];
+        emit(
+          state.copyWith(
+            items: _filter(state.query),
+            isLoadingMore: false,
+            hasMore: _allItems.length < data.totalCount,
+          ),
+        );
+      case ApiFailure<ChecklistPage>(:final type):
+        emit(state.copyWith(isLoadingMore: false, failure: type));
     }
   }
 

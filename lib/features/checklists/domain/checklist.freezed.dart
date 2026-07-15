@@ -12,6 +12,272 @@ part of 'checklist.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
+mixin _$ChecklistPage {
+
+ List<ChecklistSummary> get items; int get totalCount;
+/// Create a copy of ChecklistPage
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ChecklistPageCopyWith<ChecklistPage> get copyWith => _$ChecklistPageCopyWithImpl<ChecklistPage>(this as ChecklistPage, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistPage&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),totalCount);
+
+@override
+String toString() {
+  return 'ChecklistPage(items: $items, totalCount: $totalCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ChecklistPageCopyWith<$Res>  {
+  factory $ChecklistPageCopyWith(ChecklistPage value, $Res Function(ChecklistPage) _then) = _$ChecklistPageCopyWithImpl;
+@useResult
+$Res call({
+ List<ChecklistSummary> items, int totalCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$ChecklistPageCopyWithImpl<$Res>
+    implements $ChecklistPageCopyWith<$Res> {
+  _$ChecklistPageCopyWithImpl(this._self, this._then);
+
+  final ChecklistPage _self;
+  final $Res Function(ChecklistPage) _then;
+
+/// Create a copy of ChecklistPage
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? totalCount = null,}) {
+  return _then(_self.copyWith(
+items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
+as List<ChecklistSummary>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ChecklistPage].
+extension ChecklistPagePatterns on ChecklistPage {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ChecklistPage value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ChecklistPage() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ChecklistPage value)  $default,){
+final _that = this;
+switch (_that) {
+case _ChecklistPage():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ChecklistPage value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ChecklistPage() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<ChecklistSummary> items,  int totalCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ChecklistPage() when $default != null:
+return $default(_that.items,_that.totalCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<ChecklistSummary> items,  int totalCount)  $default,) {final _that = this;
+switch (_that) {
+case _ChecklistPage():
+return $default(_that.items,_that.totalCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<ChecklistSummary> items,  int totalCount)?  $default,) {final _that = this;
+switch (_that) {
+case _ChecklistPage() when $default != null:
+return $default(_that.items,_that.totalCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _ChecklistPage implements ChecklistPage {
+  const _ChecklistPage({required final  List<ChecklistSummary> items, required this.totalCount}): _items = items;
+  
+
+ final  List<ChecklistSummary> _items;
+@override List<ChecklistSummary> get items {
+  if (_items is EqualUnmodifiableListView) return _items;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_items);
+}
+
+@override final  int totalCount;
+
+/// Create a copy of ChecklistPage
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ChecklistPageCopyWith<_ChecklistPage> get copyWith => __$ChecklistPageCopyWithImpl<_ChecklistPage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistPage&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),totalCount);
+
+@override
+String toString() {
+  return 'ChecklistPage(items: $items, totalCount: $totalCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ChecklistPageCopyWith<$Res> implements $ChecklistPageCopyWith<$Res> {
+  factory _$ChecklistPageCopyWith(_ChecklistPage value, $Res Function(_ChecklistPage) _then) = __$ChecklistPageCopyWithImpl;
+@override @useResult
+$Res call({
+ List<ChecklistSummary> items, int totalCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$ChecklistPageCopyWithImpl<$Res>
+    implements _$ChecklistPageCopyWith<$Res> {
+  __$ChecklistPageCopyWithImpl(this._self, this._then);
+
+  final _ChecklistPage _self;
+  final $Res Function(_ChecklistPage) _then;
+
+/// Create a copy of ChecklistPage
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalCount = null,}) {
+  return _then(_ChecklistPage(
+items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
+as List<ChecklistSummary>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$ChecklistSummary {
 
  String get id; String get name; String? get categoryName; String? get appGroupName;

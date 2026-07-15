@@ -77,6 +77,7 @@ class DashboardView extends StatelessWidget {
                 email: context.watch<AuthCubit>().state.email,
                 onRetry: cubit.load,
                 onRefresh: cubit.refresh,
+                onLoadMore: cubit.loadNextPage,
                 onQueryChanged: cubit.searchChanged,
                 onToggleFavorite: cubit.toggleFavorite,
                 onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
@@ -95,6 +96,7 @@ class ChecklistListContent extends StatelessWidget {
     required this.email,
     required this.onRetry,
     required this.onRefresh,
+    required this.onLoadMore,
     required this.onQueryChanged,
     required this.onToggleFavorite,
     required this.onSelected,
@@ -105,68 +107,82 @@ class ChecklistListContent extends StatelessWidget {
   final String email;
   final VoidCallback onRetry;
   final Future<void> Function() onRefresh;
+  final VoidCallback onLoadMore;
   final ValueChanged<String> onQueryChanged;
   final ValueChanged<String> onToggleFavorite;
   final ValueChanged<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: onRefresh,
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(24),
-        children: [
-          Text(
-            context.l10n.dashboardHeadline,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 8),
-          Text(context.l10n.checklistDashboardBody),
-          const SizedBox(height: 16),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.verified_user_outlined),
-              title: Text(context.l10n.sessionStored),
-              subtitle: Text(context.l10n.signedInAs(email)),
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.extentAfter < 240) {
+          onLoadMore();
+        }
+        return false;
+      },
+      child: RefreshIndicator(
+        onRefresh: onRefresh,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(24),
+          children: [
+            Text(
+              context.l10n.dashboardHeadline,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            context.l10n.checklistsTitle,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            key: const Key('checklistSearchField'),
-            decoration: InputDecoration(
-              labelText: context.l10n.searchChecklists,
-              prefixIcon: const Icon(Icons.search),
+            const SizedBox(height: 8),
+            Text(context.l10n.checklistDashboardBody),
+            const SizedBox(height: 16),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.verified_user_outlined),
+                title: Text(context.l10n.sessionStored),
+                subtitle: Text(context.l10n.signedInAs(email)),
+              ),
             ),
-            onChanged: onQueryChanged,
-          ),
-          const SizedBox(height: 8),
-          PageStateView(
-            isLoading:
-                state.status == ChecklistListStatus.initial ||
-                state.status == ChecklistListStatus.loading,
-            isEmpty: state.items.isEmpty,
-            failure: state.items.isEmpty ? state.failure : null,
-            onRetry: onRetry,
-            emptyMessage: context.l10n.noChecklists,
-            child: Column(
-              children: [
-                for (final item in state.items)
-                  _ChecklistCard(
-                    item: item,
-                    isFavorite: state.favoriteIds.contains(item.id),
-                    onToggleFavorite: onToggleFavorite,
-                    onSelected: onSelected,
-                  ),
-              ],
+            const SizedBox(height: 24),
+            Text(
+              context.l10n.checklistsTitle,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            TextField(
+              key: const Key('checklistSearchField'),
+              decoration: InputDecoration(
+                labelText: context.l10n.searchChecklists,
+                prefixIcon: const Icon(Icons.search),
+              ),
+              onChanged: onQueryChanged,
+            ),
+            const SizedBox(height: 8),
+            PageStateView(
+              isLoading:
+                  state.status == ChecklistListStatus.initial ||
+                  state.status == ChecklistListStatus.loading,
+              isEmpty: state.items.isEmpty,
+              failure: state.items.isEmpty ? state.failure : null,
+              onRetry: onRetry,
+              emptyMessage: context.l10n.noChecklists,
+              child: Column(
+                children: [
+                  for (final item in state.items)
+                    _ChecklistCard(
+                      item: item,
+                      isFavorite: state.favoriteIds.contains(item.id),
+                      onToggleFavorite: onToggleFavorite,
+                      onSelected: onSelected,
+                    ),
+                  if (state.isLoadingMore)
+                    const Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

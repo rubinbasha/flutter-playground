@@ -31,7 +31,7 @@ class DioChecklistService implements ChecklistService {
 
 @LazySingleton(as: ChecklistService, env: ['demo'])
 class FakeChecklistService implements ChecklistService {
-  static const _items = [
+  static final List<ChecklistItemDto> _items = [
     ChecklistItemDto(
       id: 'safety-walk',
       name: 'Weekly safety walk',
@@ -49,6 +49,15 @@ class FakeChecklistService implements ChecklistService {
       name: 'Opening checklist',
       checklistcategoryName: 'Daily routines',
       appgroupName: 'Retail',
+    ),
+    ...List.generate(
+      27,
+      (index) => ChecklistItemDto(
+        id: 'practice-${index + 1}',
+        name: 'Practice checklist ${index + 1}',
+        checklistcategoryName: index.isEven ? 'Safety' : 'Operations',
+        appgroupName: 'Learning lab',
+      ),
     ),
   ];
 

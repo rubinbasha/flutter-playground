@@ -48,8 +48,8 @@ void main() {
 
     expect(
       result,
-      isA<ApiSuccess<List<ChecklistSummary>>>().having(
-        (success) => success.data.map((item) => item.id),
+      isA<ApiSuccess<ChecklistPage>>().having(
+        (success) => success.data.items.map((item) => item.id),
         'ids',
         ['first', 'second'],
       ),
@@ -88,8 +88,8 @@ void main() {
 
     expect(
       result,
-      isA<ApiSuccess<List<ChecklistSummary>>>().having(
-        (success) => success.data.single.id,
+      isA<ApiSuccess<ChecklistPage>>().having(
+        (success) => success.data.items.single.id,
         'cached id',
         'cached',
       ),
