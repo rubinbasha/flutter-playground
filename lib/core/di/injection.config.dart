@@ -21,6 +21,9 @@ import '../../features/auth/data/auth_service.dart' as _i903;
 import '../../features/auth/data/token_storage.dart' as _i280;
 import '../../features/checklists/data/checklist_repository.dart' as _i442;
 import '../../features/checklists/data/checklist_service.dart' as _i856;
+import '../../features/checklists/data/checklist_updates_repository.dart'
+    as _i435;
+import '../../features/checklists/data/checklist_updates_socket.dart' as _i373;
 import '../network/auth_token_interceptor.dart' as _i743;
 import 'modules.dart' as _i738;
 
@@ -49,9 +52,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i280.TokenStorage>(
       () => _i280.TokenStorage(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i373.ChecklistUpdatesSocket>(
+      () => _i373.FakeChecklistUpdatesSocket(),
+      registerFor: {_demo},
+    );
     gh.lazySingleton<_i903.AuthService>(
       () => _i903.FakeAuthService(),
       registerFor: {_demo},
+    );
+    gh.lazySingleton<_i373.ChecklistUpdatesSocket>(
+      () => _i373.WebSocketChecklistUpdatesSocket(),
+      registerFor: {_production},
+    );
+    gh.lazySingleton<_i435.ChecklistUpdatesRepository>(
+      () =>
+          _i435.ChecklistUpdatesRepository(gh<_i373.ChecklistUpdatesSocket>()),
     );
     gh.lazySingleton<_i743.AuthTokenInterceptor>(
       () => _i743.AuthTokenInterceptor(gh<_i280.TokenStorage>()),
@@ -83,6 +98,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => routerModule.router(
         gh<_i726.AuthRepository>(),
         gh<_i442.ChecklistRepository>(),
+        gh<_i435.ChecklistUpdatesRepository>(),
       ),
     );
     return this;
