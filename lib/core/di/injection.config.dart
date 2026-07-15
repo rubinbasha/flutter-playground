@@ -16,12 +16,12 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-import '../../features/auth/data/auth_repository.dart' as _i726;
 import '../../features/auth/data/auth_service.dart' as _i903;
 import '../../features/auth/data/token_storage.dart' as _i280;
 import '../../features/checklists/data/checklist_repository.dart' as _i442;
 import '../../features/checklists/data/checklist_service.dart' as _i856;
 import '../network/auth_token_interceptor.dart' as _i743;
+import '../repositories/auth_repository.dart' as _i1002;
 import 'modules.dart' as _i738;
 
 const String _demo = 'demo';
@@ -73,15 +73,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i442.ChecklistRepository>(
       () => _i442.ChecklistRepository(gh<_i856.ChecklistService>()),
     );
-    gh.lazySingleton<_i726.AuthRepository>(
-      () => _i726.AuthRepository(
+    gh.lazySingleton<_i1002.AuthRepository>(
+      () => _i1002.AuthRepository(
         gh<_i903.AuthService>(),
         gh<_i280.TokenStorage>(),
       ),
     );
     gh.lazySingleton<_i583.GoRouter>(
       () => routerModule.router(
-        gh<_i726.AuthRepository>(),
+        gh<_i1002.AuthRepository>(),
         gh<_i442.ChecklistRepository>(),
       ),
     );

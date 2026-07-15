@@ -42,9 +42,12 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 
 - Features live under `lib/features/<feature>/` and split into `data`, `domain`
   when a distinct domain model is justified, and `presentation`.
+- Keep APIs, services, DTOs, and feature-owned persistence in feature `data`
+  directories. Keep repository classes in `lib/core/repositories/` so the
+  coordination boundary is visibly separate from individual features.
 - Keep a feature's Cubit and screen close together.
-- Shared infrastructure lives under `lib/core/`; shared visual styling lives
-  under `lib/theme/`.
+- Other shared infrastructure lives under `lib/core/`; shared visual styling
+  lives under `lib/theme/`.
 - Technical implementation notes live under `docs/` and are updated with each
   materially new feature.
 
