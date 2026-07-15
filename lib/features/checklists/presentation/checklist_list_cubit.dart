@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_playground/core/repositories/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
