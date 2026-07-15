@@ -1,11 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_playground/core/events/event.dart';
+import 'package:flutter_playground/core/repositories/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
 import 'package:flutter_playground/features/checklists/data/favorites_store.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'checklist_list_cubit.freezed.dart';
+
+sealed class ChecklistListEffect {
+  const ChecklistListEffect();
+}
+
+final class OpenChecklistDetails extends ChecklistListEffect {
+  const OpenChecklistDetails(this.checklistId);
+
+  final String checklistId;
+}
 
 enum ChecklistListStatus { initial, loading, success }
 
@@ -16,6 +27,7 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default(<ChecklistSummary>[]) List<ChecklistSummary> items,
     @Default(<String>{}) Set<String> favoriteIds,
     FailureType? failure,
+    Event<ChecklistListEffect>? effect,
   }) = _ChecklistListState;
 }
 
@@ -30,16 +42,30 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
   final ChecklistRepository _repository;
   final FavoritesStore? _favoritesStore;
 
+  void checklistSelected(String checklistId) {
+    emit(state.copyWith(effect: Event(OpenChecklistDetails(checklistId))));
+  }
+
   Future<void> load() async {
     if (state.status == ChecklistListStatus.loading) {
       return;
     }
-    emit(state.copyWith(status: ChecklistListStatus.loading, failure: null));
+    emit(
+      state.copyWith(
+        status: ChecklistListStatus.loading,
+        failure: null,
+        effect: null,
+      ),
+    );
     final result = await _repository.getChecklists();
     switch (result) {
       case ApiSuccess<List<ChecklistSummary>>(:final data):
         emit(
-          ChecklistListState(status: ChecklistListStatus.success, items: data),
+          state.copyWith(
+            status: ChecklistListStatus.success,
+            items: data,
+            failure: null,
+          ),
         );
       case ApiFailure<List<ChecklistSummary>>(:final type):
         emit(

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChecklistListState {
 
- ChecklistListStatus get status; List<ChecklistSummary> get items; Set<String> get favoriteIds; FailureType? get failure;
+ ChecklistListStatus get status; List<ChecklistSummary> get items; Set<String> get favoriteIds; FailureType? get failure; Event<ChecklistListEffect>? get effect;
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ChecklistListStateCopyWith<ChecklistListState> get copyWith => _$ChecklistListS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.items, items)&&const DeepCollectionEquality().equals(other.favoriteIds, favoriteIds)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.items, items)&&const DeepCollectionEquality().equals(other.favoriteIds, favoriteIds)&&(identical(other.failure, failure) || other.failure == failure)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(items),const DeepCollectionEquality().hash(favoriteIds),failure);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(items),const DeepCollectionEquality().hash(favoriteIds),failure,effect);
 
 @override
 String toString() {
-  return 'ChecklistListState(status: $status, items: $items, favoriteIds: $favoriteIds, failure: $failure)';
+  return 'ChecklistListState(status: $status, items: $items, favoriteIds: $favoriteIds, failure: $failure, effect: $effect)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ChecklistListStateCopyWith<$Res>  {
   factory $ChecklistListStateCopyWith(ChecklistListState value, $Res Function(ChecklistListState) _then) = _$ChecklistListStateCopyWithImpl;
 @useResult
 $Res call({
- ChecklistListStatus status, List<ChecklistSummary> items, Set<String> favoriteIds, FailureType? failure
+ ChecklistListStatus status, List<ChecklistSummary> items, Set<String> favoriteIds, FailureType? failure, Event<ChecklistListEffect>? effect
 });
 
 
@@ -62,13 +62,14 @@ class _$ChecklistListStateCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? items = null,Object? favoriteIds = null,Object? failure = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? items = null,Object? favoriteIds = null,Object? failure = freezed,Object? effect = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ChecklistListStatus,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<ChecklistSummary>,favoriteIds: null == favoriteIds ? _self.favoriteIds : favoriteIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
-as FailureType?,
+as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
+as Event<ChecklistListEffect>?,
   ));
 }
 
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure,  Event<ChecklistListEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistListState() when $default != null:
-return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _:
+return $default(_that.status,_that.items,_that.favoriteIds,_that.failure,_that.effect);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure,  Event<ChecklistListEffect>? effect)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistListState():
-return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _:
+return $default(_that.status,_that.items,_that.favoriteIds,_that.failure,_that.effect);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +195,10 @@ return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChecklistListStatus status,  List<ChecklistSummary> items,  Set<String> favoriteIds,  FailureType? failure,  Event<ChecklistListEffect>? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistListState() when $default != null:
-return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _:
+return $default(_that.status,_that.items,_that.favoriteIds,_that.failure,_that.effect);case _:
   return null;
 
 }
@@ -209,7 +210,7 @@ return $default(_that.status,_that.items,_that.favoriteIds,_that.failure);case _
 
 
 class _ChecklistListState implements ChecklistListState {
-  const _ChecklistListState({this.status = ChecklistListStatus.initial, final  List<ChecklistSummary> items = const <ChecklistSummary>[], final  Set<String> favoriteIds = const <String>{}, this.failure}): _items = items,_favoriteIds = favoriteIds;
+  const _ChecklistListState({this.status = ChecklistListStatus.initial, final  List<ChecklistSummary> items = const <ChecklistSummary>[], final  Set<String> favoriteIds = const <String>{}, this.failure, this.effect}): _items = items,_favoriteIds = favoriteIds;
   
 
 @override@JsonKey() final  ChecklistListStatus status;
@@ -228,6 +229,7 @@ class _ChecklistListState implements ChecklistListState {
 }
 
 @override final  FailureType? failure;
+@override final  Event<ChecklistListEffect>? effect;
 
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +241,16 @@ _$ChecklistListStateCopyWith<_ChecklistListState> get copyWith => __$ChecklistLi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._items, _items)&&const DeepCollectionEquality().equals(other._favoriteIds, _favoriteIds)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._items, _items)&&const DeepCollectionEquality().equals(other._favoriteIds, _favoriteIds)&&(identical(other.failure, failure) || other.failure == failure)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_items),const DeepCollectionEquality().hash(_favoriteIds),failure);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_items),const DeepCollectionEquality().hash(_favoriteIds),failure,effect);
 
 @override
 String toString() {
-  return 'ChecklistListState(status: $status, items: $items, favoriteIds: $favoriteIds, failure: $failure)';
+  return 'ChecklistListState(status: $status, items: $items, favoriteIds: $favoriteIds, failure: $failure, effect: $effect)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$ChecklistListStateCopyWith<$Res> implements $ChecklistLis
   factory _$ChecklistListStateCopyWith(_ChecklistListState value, $Res Function(_ChecklistListState) _then) = __$ChecklistListStateCopyWithImpl;
 @override @useResult
 $Res call({
- ChecklistListStatus status, List<ChecklistSummary> items, Set<String> favoriteIds, FailureType? failure
+ ChecklistListStatus status, List<ChecklistSummary> items, Set<String> favoriteIds, FailureType? failure, Event<ChecklistListEffect>? effect
 });
 
 
@@ -276,13 +278,14 @@ class __$ChecklistListStateCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? items = null,Object? favoriteIds = null,Object? failure = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? items = null,Object? favoriteIds = null,Object? failure = freezed,Object? effect = freezed,}) {
   return _then(_ChecklistListState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ChecklistListStatus,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<ChecklistSummary>,favoriteIds: null == favoriteIds ? _self._favoriteIds : favoriteIds // ignore: cast_nullable_to_non_nullable
 as Set<String>,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
-as FailureType?,
+as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
+as Event<ChecklistListEffect>?,
   ));
 }
 
