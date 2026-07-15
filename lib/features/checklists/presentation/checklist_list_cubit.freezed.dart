@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChecklistListState {
 
- ChecklistListStatus get status; List<ChecklistSummary> get items; FailureType? get failure; Effect<ChecklistListEffect>? get effect;
+ ChecklistListStatus get status; List<ChecklistSummary> get items; FailureType? get failure; Event<ChecklistListEffect>? get effect;
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $ChecklistListStateCopyWith<$Res>  {
   factory $ChecklistListStateCopyWith(ChecklistListState value, $Res Function(ChecklistListState) _then) = _$ChecklistListStateCopyWithImpl;
 @useResult
 $Res call({
- ChecklistListStatus status, List<ChecklistSummary> items, FailureType? failure, Effect<ChecklistListEffect>? effect
+ ChecklistListStatus status, List<ChecklistSummary> items, FailureType? failure, Event<ChecklistListEffect>? effect
 });
 
 
@@ -68,7 +68,7 @@ status: null == status ? _self.status : status // ignore: cast_nullable_to_non_n
 as ChecklistListStatus,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<ChecklistSummary>,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
-as Effect<ChecklistListEffect>?,
+as Event<ChecklistListEffect>?,
   ));
 }
 
@@ -153,7 +153,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Effect<ChecklistListEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Event<ChecklistListEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistListState() when $default != null:
 return $default(_that.status,_that.items,_that.failure,_that.effect);case _:
@@ -174,7 +174,7 @@ return $default(_that.status,_that.items,_that.failure,_that.effect);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Effect<ChecklistListEffect>? effect)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Event<ChecklistListEffect>? effect)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistListState():
 return $default(_that.status,_that.items,_that.failure,_that.effect);case _:
@@ -194,7 +194,7 @@ return $default(_that.status,_that.items,_that.failure,_that.effect);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Effect<ChecklistListEffect>? effect)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChecklistListStatus status,  List<ChecklistSummary> items,  FailureType? failure,  Event<ChecklistListEffect>? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistListState() when $default != null:
 return $default(_that.status,_that.items,_that.failure,_that.effect);case _:
@@ -221,7 +221,7 @@ class _ChecklistListState implements ChecklistListState {
 }
 
 @override final  FailureType? failure;
-@override final  Effect<ChecklistListEffect>? effect;
+@override final  Event<ChecklistListEffect>? effect;
 
 /// Create a copy of ChecklistListState
 /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +253,7 @@ abstract mixin class _$ChecklistListStateCopyWith<$Res> implements $ChecklistLis
   factory _$ChecklistListStateCopyWith(_ChecklistListState value, $Res Function(_ChecklistListState) _then) = __$ChecklistListStateCopyWithImpl;
 @override @useResult
 $Res call({
- ChecklistListStatus status, List<ChecklistSummary> items, FailureType? failure, Effect<ChecklistListEffect>? effect
+ ChecklistListStatus status, List<ChecklistSummary> items, FailureType? failure, Event<ChecklistListEffect>? effect
 });
 
 
@@ -276,7 +276,7 @@ status: null == status ? _self.status : status // ignore: cast_nullable_to_non_n
 as ChecklistListStatus,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<ChecklistSummary>,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
-as Effect<ChecklistListEffect>?,
+as Event<ChecklistListEffect>?,
   ));
 }
 

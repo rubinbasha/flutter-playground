@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_playground/core/effects/effect.dart';
+import 'package:flutter_playground/core/events/event.dart';
 import 'package:flutter_playground/core/repositories/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
@@ -25,7 +25,7 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default(ChecklistListStatus.initial) ChecklistListStatus status,
     @Default(<ChecklistSummary>[]) List<ChecklistSummary> items,
     FailureType? failure,
-    Effect<ChecklistListEffect>? effect,
+    Event<ChecklistListEffect>? effect,
   }) = _ChecklistListState;
 }
 
@@ -35,7 +35,7 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
   final ChecklistRepository _repository;
 
   void checklistSelected(String checklistId) {
-    emit(state.copyWith(effect: Effect(OpenChecklistDetails(checklistId))));
+    emit(state.copyWith(effect: Event(OpenChecklistDetails(checklistId))));
   }
 
   Future<void> load() async {
