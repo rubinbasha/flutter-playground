@@ -38,16 +38,31 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous.effect != current.effect,
-      listener: (context, state) {
-        switch (state.effect?.getContentIfNotConsumed()) {
-          case AuthOpenLogin():
-            context.go(LoginScreen.route);
-          case _:
-            break;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (previous, current) => previous.effect != current.effect,
+          listener: (context, state) {
+            switch (state.effect?.getContentIfNotConsumed()) {
+              case AuthOpenLogin():
+                context.go(LoginScreen.route);
+              case _:
+                break;
+            }
+          },
+        ),
+        BlocListener<ChecklistListCubit, ChecklistListState>(
+          listenWhen: (previous, current) => previous.effect != current.effect,
+          listener: (context, state) {
+            switch (state.effect?.getContentIfNotConsumed()) {
+              case OpenChecklistDetails(:final checklistId):
+                context.push(ChecklistDetailsScreen.path(checklistId));
+              case _:
+                break;
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.l10n.dashboardTitle),
@@ -69,8 +84,9 @@ class DashboardView extends StatelessWidget {
                 state: state,
                 email: context.watch<AuthCubit>().state.email,
                 onRetry: context.read<ChecklistListCubit>().load,
-                onSelected: (id) =>
-                    context.push(ChecklistDetailsScreen.path(id)),
+                onSelected: context
+                    .read<ChecklistListCubit>()
+                    .checklistSelected,
               );
             },
           ),

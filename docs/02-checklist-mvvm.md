@@ -10,8 +10,9 @@ the Flutter implementation uses idiomatic MVVM with `flutter_bloc`.
   malformed detail payloads before creating strict domain models.
 - Widgets are Views. `ChecklistListCubit` and `ChecklistDetailsCubit` are their
   ViewModels and expose immutable Freezed UI state.
-- Views call focused Cubit methods such as `load`; selection stays in the View
-  because it is a direct routing action with no business decision to model.
+- Views call focused Cubit methods such as `load` and `checklistSelected`.
+  Selection emits a typed `Effect<ChecklistListEffect>` that a `BlocListener`
+  consumes once before asking the router to open the details screen.
 - `PageStateView` centralizes loading, empty, error, and retry behavior.
 
 The list, details, repository, Cubits, and screen contract each have focused
