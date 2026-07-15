@@ -59,9 +59,9 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 - Every screen-level Cubit exposes immutable `State` and defines typed effect
   payloads next to the Cubit when one-off UI work is needed.
 - State is durable and renderable. Effects are one-off navigation, snackbar,
-  dialog, or focus actions wrapped in `Effect<T>` and consumed by a
+  dialog, or focus actions wrapped in `Event<T>` and consumed by a
   `BlocListener` with `getContentIfNotConsumed()`.
-- Create a fresh `Effect` wrapper for every effect; never reuse a consumed one.
+- Create a fresh `Event` wrapper for every effect; never reuse a consumed one.
 - State flows down; widgets call focused Cubit methods for user actions.
 - Widgets trigger repository-backed work without awaiting it to decide UI
   success. Cubits own the async work and emit the result.

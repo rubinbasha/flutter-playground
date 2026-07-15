@@ -8,7 +8,7 @@ The playground uses a small, consistent MVVM mapping:
 - **Effect payload** is a typed one-off UI command such as navigation, a
   snackbar, dialog, or focus request.
 
-One-off payloads are stored as `Effect<T>` in state and consumed through
+One-off payloads are stored as `Event<T>` in state and consumed through
 `BlocListener.getContentIfNotConsumed()`. A fresh wrapper is created for each
 effect so rebuilds or multiple listeners cannot handle it twice.
 

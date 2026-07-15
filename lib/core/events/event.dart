@@ -1,6 +1,6 @@
 /// Wraps a one-off UI command so it is handled only once.
-final class Effect<T extends Object> {
-  Effect(this._content);
+final class Event<T extends Object> {
+  Event(this._content);
 
   final T _content;
   bool _isConsumed = false;

@@ -7,7 +7,7 @@
 - `LoginView` calls focused input and submit methods on `AuthCubit`.
 - `AuthCubit` is the ViewModel: it validates local input, delegates asynchronous
   work, emits durable `AuthState`, and exposes navigation as a consumable
-  `Effect<AuthEffect>`.
+  `Event<AuthEffect>`.
 - `AuthRepository` validates nullable network response fields before storing a
   session.
 - `AuthService` has deterministic demo and Dio/Retrofit implementations.
