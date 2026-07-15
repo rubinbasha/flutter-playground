@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
+import 'package:flutter_playground/features/checklists/data/checklist_cache.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_service.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
@@ -7,11 +8,12 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class ChecklistRepository {
-  ChecklistRepository(this._service);
+  ChecklistRepository(this._service, this._cache);
 
   static const int defaultLimit = 15;
 
   final ChecklistService _service;
+  final ChecklistCache _cache;
 
   Future<ApiResult<List<ChecklistSummary>>> getChecklists() async {
     try {
@@ -25,13 +27,19 @@ class ChecklistRepository {
               .whereType<ChecklistSummary>()
               .toList(growable: false) ??
           const <ChecklistSummary>[];
+      try {
+        await _cache.save(items);
+      } on Exception {
+        // Caching is supplemental; fresh API data remains usable.
+      }
       return ApiSuccess(items);
     } on DioException catch (error) {
-      return ApiFailure(type: FailureType.network, debugMessage: error.message);
+      return _cachedOr(
+        ApiFailure(type: FailureType.network, debugMessage: error.message),
+      );
     } on Exception catch (error) {
-      return ApiFailure(
-        type: FailureType.unknown,
-        debugMessage: error.toString(),
+      return _cachedOr(
+        ApiFailure(type: FailureType.unknown, debugMessage: error.toString()),
       );
     }
   }
@@ -55,6 +63,13 @@ class ChecklistRepository {
         debugMessage: error.toString(),
       );
     }
+  }
+
+  ApiResult<List<ChecklistSummary>> _cachedOr(
+    ApiFailure<List<ChecklistSummary>> failure,
+  ) {
+    final cached = _cache.load();
+    return cached == null ? failure : ApiSuccess(cached);
   }
 
   ChecklistSummary? _toSummary(ChecklistItemDto dto) {
