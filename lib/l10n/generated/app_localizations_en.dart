@@ -65,7 +65,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutThisPlaygroundBody =>
-      'A mobile-only branch-driven app for learning production Flutter patterns.';
+      'A mobile-only branch-driven demo used for experimentation with production Flutter patterns.';
 
   @override
   String get dashboardTitle => 'Playground';
