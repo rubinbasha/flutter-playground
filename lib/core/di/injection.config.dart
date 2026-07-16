@@ -16,10 +16,10 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-import '../../features/auth/data/auth_service.dart' as _i903;
-import '../../features/auth/data/token_storage.dart' as _i280;
 import '../network/auth_token_interceptor.dart' as _i743;
-import '../repositories/auth_repository.dart' as _i1002;
+import '../repositories/auth/auth_repository.dart' as _i161;
+import '../repositories/auth/auth_service.dart' as _i339;
+import '../repositories/auth/token_storage.dart' as _i950;
 import 'modules.dart' as _i738;
 
 const String _demo = 'demo';
@@ -40,15 +40,15 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i528.PrettyDioLogger>(() => networkModule.logger);
-    gh.lazySingleton<_i280.TokenStorage>(
-      () => _i280.TokenStorage(gh<_i460.SharedPreferences>()),
-    );
-    gh.lazySingleton<_i903.AuthService>(
-      () => _i903.FakeAuthService(),
+    gh.lazySingleton<_i339.AuthService>(
+      () => _i339.FakeAuthService(),
       registerFor: {_demo},
     );
+    gh.lazySingleton<_i950.TokenStorage>(
+      () => _i950.TokenStorage(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i743.AuthTokenInterceptor>(
-      () => _i743.AuthTokenInterceptor(gh<_i280.TokenStorage>()),
+      () => _i743.AuthTokenInterceptor(gh<_i950.TokenStorage>()),
     );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(
@@ -56,18 +56,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i528.PrettyDioLogger>(),
       ),
     );
-    gh.lazySingleton<_i903.AuthService>(
-      () => _i903.DioAuthService(gh<_i361.Dio>()),
+    gh.lazySingleton<_i339.AuthService>(
+      () => _i339.DioAuthService(gh<_i361.Dio>()),
       registerFor: {_production},
     );
-    gh.lazySingleton<_i1002.AuthRepository>(
-      () => _i1002.AuthRepository(
-        gh<_i903.AuthService>(),
-        gh<_i280.TokenStorage>(),
+    gh.lazySingleton<_i161.AuthRepository>(
+      () => _i161.AuthRepository(
+        gh<_i339.AuthService>(),
+        gh<_i950.TokenStorage>(),
       ),
     );
     gh.lazySingleton<_i583.GoRouter>(
-      () => routerModule.router(gh<_i1002.AuthRepository>()),
+      () => routerModule.router(gh<_i161.AuthRepository>()),
     );
     return this;
   }

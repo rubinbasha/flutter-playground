@@ -40,11 +40,13 @@ goals and with the Flutter conventions adapted from `roe_risk_checkit`.
 
 ## Structure
 
-- Features live under `lib/features/<feature>/` and split into `data`, `domain`
-  when a distinct domain model is justified, and `presentation`.
-- Keep APIs, services, DTOs, and feature-owned persistence in feature `data`
-  directories. Keep repository classes in `lib/core/repositories/` so the
-  coordination boundary is visibly separate from individual features.
+- Treat each repository as a domain package under
+  `lib/core/repositories/<domain>/`.
+- Keep a repository's API clients, DTOs, services, persistence adapters,
+  realtime adapters, validated domain models, and coordination class together
+  inside that package. Their ownership follows the domain, not a screen.
+- Features live under `lib/features/<feature>/` and contain presentation code
+  such as Cubits, screens, and feature-local widgets.
 - Keep a feature's Cubit and screen close together.
 - Other shared infrastructure lives under `lib/core/`; shared visual styling
   lives under `lib/theme/`.
@@ -97,7 +99,8 @@ goals and with the Flutter conventions adapted from `roe_risk_checkit`.
 
 - Treat backend JSON as untrusted. Response DTO fields are nullable or have safe
   defaults at the network boundary.
-- Validate required fields in repositories before creating strict domain state.
+- Validate required fields in repository domain packages before creating strict
+  domain state.
 - Keep app-owned request DTOs strict.
 - Convert transport exceptions into controlled `ApiFailure` values.
 - Preserve caught exception objects in `ApiFailure.originalError` so callers
@@ -105,8 +108,8 @@ goals and with the Flutter conventions adapted from `roe_risk_checkit`.
 - Wrap Retrofit futures at the service boundary with `mapToApiResult()` so
   repositories receive `GenericResponse<T>` instead of handling Dio
   exceptions repeatedly.
-- Repositories map successful DTOs into validated domain values and propagate
-  transport failures with `ApiFailure.copyWithType()`.
+- Repository domain packages map successful DTOs into validated domain values
+  and propagate transport failures with `ApiFailure.copyWithType()`.
 - Mark public requests explicitly; authenticated headers are added by the Dio
   interceptor.
 - Preserve backend list order unless a feature explicitly owns reordering.

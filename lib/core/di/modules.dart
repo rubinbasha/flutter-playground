@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_playground/config/app_config.dart';
 import 'package:flutter_playground/core/network/auth_token_interceptor.dart';
-import 'package:flutter_playground/core/repositories/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_repository.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:go_router/go_router.dart';
