@@ -16,12 +16,12 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i528;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-import '../../features/checklists/data/checklist_service.dart' as _i856;
 import '../network/auth_token_interceptor.dart' as _i743;
 import '../repositories/auth/auth_repository.dart' as _i161;
 import '../repositories/auth/auth_service.dart' as _i339;
 import '../repositories/auth/token_storage.dart' as _i950;
-import '../repositories/checklist_repository.dart' as _i527;
+import '../repositories/checklist/checklist_repository.dart' as _i968;
+import '../repositories/checklist/checklist_service.dart' as _i787;
 import 'modules.dart' as _i738;
 
 const String _demo = 'demo';
@@ -42,16 +42,16 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i528.PrettyDioLogger>(() => networkModule.logger);
-    gh.lazySingleton<_i856.ChecklistService>(
-      () => _i856.FakeChecklistService(),
-      registerFor: {_demo},
-    );
     gh.lazySingleton<_i339.AuthService>(
       () => _i339.FakeAuthService(),
       registerFor: {_demo},
     );
     gh.lazySingleton<_i950.TokenStorage>(
       () => _i950.TokenStorage(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i787.ChecklistService>(
+      () => _i787.FakeChecklistService(),
+      registerFor: {_demo},
     );
     gh.lazySingleton<_i743.AuthTokenInterceptor>(
       () => _i743.AuthTokenInterceptor(gh<_i950.TokenStorage>()),
@@ -66,23 +66,23 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i339.DioAuthService(gh<_i361.Dio>()),
       registerFor: {_production},
     );
-    gh.lazySingleton<_i856.ChecklistService>(
-      () => _i856.DioChecklistService(gh<_i361.Dio>()),
-      registerFor: {_production},
-    );
-    gh.lazySingleton<_i527.ChecklistRepository>(
-      () => _i527.ChecklistRepository(gh<_i856.ChecklistService>()),
-    );
     gh.lazySingleton<_i161.AuthRepository>(
       () => _i161.AuthRepository(
         gh<_i339.AuthService>(),
         gh<_i950.TokenStorage>(),
       ),
     );
+    gh.lazySingleton<_i787.ChecklistService>(
+      () => _i787.DioChecklistService(gh<_i361.Dio>()),
+      registerFor: {_production},
+    );
+    gh.lazySingleton<_i968.ChecklistRepository>(
+      () => _i968.ChecklistRepository(gh<_i787.ChecklistService>()),
+    );
     gh.lazySingleton<_i583.GoRouter>(
       () => routerModule.router(
         gh<_i161.AuthRepository>(),
-        gh<_i527.ChecklistRepository>(),
+        gh<_i968.ChecklistRepository>(),
       ),
     );
     return this;

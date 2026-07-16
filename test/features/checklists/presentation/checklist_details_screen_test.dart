@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_playground/core/repositories/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
 import 'package:flutter_playground/l10n/generated/app_localizations.dart';
