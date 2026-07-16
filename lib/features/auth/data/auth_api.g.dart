@@ -58,7 +58,7 @@ class _AuthApi implements AuthApi {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/logout',
+            '/appuser/logoff',
             queryParameters: queryParameters,
             data: _data,
           )
