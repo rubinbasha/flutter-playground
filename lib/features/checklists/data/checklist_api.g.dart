@@ -50,12 +50,12 @@ class _ChecklistApi implements ChecklistApi {
   }
 
   @override
-  Future<ChecklistDetailsDto> getChecklistDetails(String id) async {
+  Future<Object?> getChecklistDetails(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ChecklistDetailsDto>(
+    final _options = _setStreamType<Object?>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -65,10 +65,10 @@ class _ChecklistApi implements ChecklistApi {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ChecklistDetailsDto _value;
+    final _result = await _dio.fetch<Object>(_options);
+    late Object? _value;
     try {
-      _value = ChecklistDetailsDto.fromJson(_result.data!);
+      _value = _result.data;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
