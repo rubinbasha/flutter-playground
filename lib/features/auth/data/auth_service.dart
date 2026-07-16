@@ -27,7 +27,7 @@ class DioAuthService implements AuthService {
 
 @LazySingleton(as: AuthService, env: ['demo'])
 class FakeAuthService implements AuthService {
-  static const String demoEmail = 'learner@example.com';
+  static const String demoEmail = 'demo@example.com';
   static const String demoPassword = 'playground';
 
   @override
