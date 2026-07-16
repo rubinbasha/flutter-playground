@@ -97,6 +97,8 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 
 - Treat backend JSON as untrusted. Response DTO fields are nullable or have safe
   defaults at the network boundary.
+- Give DTO properties idiomatic Dart names and use `@JsonKey(name: ...)` to
+  isolate inconsistent backend casing or terminology.
 - Validate required fields in repositories before creating strict domain state.
 - Keep app-owned request DTOs strict.
 - Convert transport exceptions into controlled `ApiFailure` values.

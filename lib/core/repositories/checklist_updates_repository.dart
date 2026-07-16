@@ -24,8 +24,8 @@ class ChecklistUpdatesRepository {
         yield ChecklistSummary(
           id: id,
           name: name,
-          categoryName: dto.checklistcategoryName,
-          appGroupName: dto.appgroupName,
+          categoryName: dto.checklistCategoryName,
+          appGroupName: dto.appGroupName,
         );
       }
     }
@@ -44,14 +44,58 @@ class ChecklistUpdatesRepository {
         yield ChecklistDetails(
           id: id!,
           name: name,
-          categoryName: dto.checklistcategoryName,
-          appGroupName: dto.appgroupName,
+          categoryName: dto.checklistCategoryName,
+          appGroupName: dto.appGroupName,
+          companyName: dto.companyName,
           dateCreated: dto.dateCreated,
           lastUpdated: dto.lastUpdated,
-          description: dto.fforwardbody,
+          versionNumber: dto.versionNumber,
+          editRight: dto.editRight,
+          description: dto.forwardBody,
+          sections: dto.sections
+              .map(_toSection)
+              .whereType<ChecklistSection>()
+              .toList(growable: false),
         );
       }
     }
+  }
+
+  ChecklistSection? _toSection(ChecklistSectionDto dto) {
+    final id = dto.id?.trim();
+    final name = dto.name?.trim();
+    if (id == null || id.isEmpty || name == null || name.isEmpty) {
+      return null;
+    }
+    return ChecklistSection(
+      id: id,
+      name: name,
+      sortOrder: dto.sortOrder,
+      fields: dto.fields
+          .map(_toField)
+          .whereType<ChecklistField>()
+          .toList(growable: false),
+    );
+  }
+
+  ChecklistField? _toField(ChecklistFieldDto dto) {
+    final id = dto.id?.trim();
+    final name = dto.name?.trim();
+    if (id == null || id.isEmpty || name == null || name.isEmpty) {
+      return null;
+    }
+    return ChecklistField(
+      id: id,
+      name: name,
+      fieldTypeId: dto.fieldTypeId,
+      fieldTypeName: dto.fieldTypeName,
+      sortOrder: dto.sortOrder,
+      isRequired: dto.isRequired ?? false,
+      isTextArea: dto.isTextArea ?? false,
+      isMultiple: dto.isMultiple ?? false,
+      isDateTime: dto.isDateTime ?? false,
+      isSignature: dto.isSignature ?? false,
+    );
   }
 
   Map<String, dynamic>? _decode(String message) {

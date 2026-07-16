@@ -71,6 +71,16 @@ class _ChecklistDetailsContent extends StatelessWidget {
           value: details.appGroupName,
         ),
         _DetailRow(
+          icon: Icons.business_outlined,
+          label: context.l10n.companyLabel,
+          value: details.companyName,
+        ),
+        _DetailRow(
+          icon: Icons.history_outlined,
+          label: context.l10n.versionLabel,
+          value: details.versionNumber,
+        ),
+        _DetailRow(
           icon: Icons.event_outlined,
           label: context.l10n.createdLabel,
           value: details.dateCreated,
@@ -85,7 +95,53 @@ class _ChecklistDetailsContent extends StatelessWidget {
           details.description ?? context.l10n.notAvailable,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
+        const SizedBox(height: 24),
+        Text(
+          context.l10n.sectionsTitle,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        if (details.sections.isEmpty)
+          Text(context.l10n.noChecklistSections)
+        else
+          for (final section in details.sections)
+            _ChecklistSectionCard(section: section),
       ],
+    );
+  }
+}
+
+class _ChecklistSectionCard extends StatelessWidget {
+  const _ChecklistSectionCard({required this.section});
+
+  final ChecklistSection section;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ExpansionTile(
+        title: Text(section.name),
+        subtitle: Text(context.l10n.fieldCount(section.fields.length)),
+        children: [
+          for (final field in section.fields)
+            ListTile(
+              leading: const Icon(Icons.text_fields_outlined),
+              title: Text(field.name),
+              subtitle: Text(
+                field.fieldTypeName ??
+                    field.fieldTypeId ??
+                    context.l10n.notAvailable,
+              ),
+              trailing: Chip(
+                label: Text(
+                  field.isRequired
+                      ? context.l10n.requiredFieldLabel
+                      : context.l10n.optionalFieldLabel,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
