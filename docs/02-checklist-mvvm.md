@@ -5,9 +5,12 @@ but the Flutter implementation uses idiomatic MVVM with `flutter_bloc`.
 
 ## Structure
 
+- `core/repositories/checklist/` owns the complete checklist domain package:
+  Retrofit, DTOs, service adapters, repository coordination, and validated
+  checklist models.
 - Retrofit DTOs accept nullable response fields.
-- `core/repositories/ChecklistRepository` drops malformed list rows and rejects
-  malformed detail payloads before creating strict domain models.
+- `ChecklistRepository` drops malformed list rows and rejects malformed detail
+  payloads before creating strict domain models.
 - Widgets are Views. `ChecklistListCubit` and `ChecklistDetailsCubit` are their
   ViewModels and expose immutable Freezed UI state.
 - Views call focused Cubit methods such as `load` and `checklistSelected`.
