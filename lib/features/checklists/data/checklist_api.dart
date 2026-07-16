@@ -8,12 +8,12 @@ part 'checklist_api.g.dart';
 abstract class ChecklistApi {
   factory ChecklistApi(Dio dio) = _ChecklistApi;
 
-  @GET('/apicheckittest/checklist/indexShort')
+  @GET('/checklist/indexShort')
   Future<ChecklistPageDto> getChecklists({
     @Query('max') required int limit,
     @Query('offset') required int offset,
   });
 
-  @GET('/apicheckittest/checklist/showdetail/{id}')
+  @GET('/checklist/showdetail/{id}')
   Future<ChecklistDetailsDto> getChecklistDetails(@Path('id') String id);
 }
