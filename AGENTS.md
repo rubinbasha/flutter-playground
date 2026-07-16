@@ -67,6 +67,14 @@ the Flutter conventions adapted from `roe_risk_checkit`.
   success. Cubits own the async work and emit the result.
 - Do not introduce `Bloc<Event, State>` while Cubit can express the requirement
   cleanly.
+- Provide Cubits at the narrowest widget-tree scope shared by their consumers.
+  App-session Cubits belong above `MaterialApp.router`; feature Cubits belong at
+  their route or shell boundary.
+- Use `BlocProvider(create: ...)` so provider-owned Cubits are closed
+  automatically. Reserve `BlocProvider.value` for an existing instance that is
+  intentionally exposed to another subtree.
+- Do not pass Cubits through screen constructors. Screen constructors accept
+  route parameters or immutable display inputs.
 - Keep navigation in screen listeners or router redirects, not repositories.
 - Name persisted and in-edit values by role when both exist.
 

@@ -6,15 +6,13 @@ import 'package:flutter_playground/features/auth/presentation/login_screen.dart'
 import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({required this.cubit, super.key});
+  const DashboardScreen({super.key});
 
   static const String route = '/dashboard';
 
-  final AuthCubit cubit;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(value: cubit, child: const DashboardView());
+    return const DashboardView();
   }
 }
 
