@@ -37,7 +37,19 @@
   "checklistNotFound": "This checklist could not be found.",
   "categoryLabel": "Category",
   "appGroupLabel": "App group",
+  "companyLabel": "Company",
+  "versionLabel": "Version",
   "createdLabel": "Created",
   "updatedLabel": "Updated",
+  "sectionsTitle": "Sections",
+  "noChecklistSections": "This checklist has no sections.",
+  "fieldCount": "{count, plural, =0 {No fields} =1 {1 field} other {{count} fields}}",
+  "@fieldCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "requiredFieldLabel": "Required",
+  "optionalFieldLabel": "Optional",
   "notAvailable": "Not available"
 }

@@ -37,20 +37,20 @@ class FakeChecklistService implements ChecklistService {
     ChecklistItemDto(
       id: 'safety-walk',
       name: 'Weekly safety walk',
-      checklistcategoryName: 'Workplace safety',
-      appgroupName: 'Operations',
+      checklistCategoryName: 'Workplace safety',
+      appGroupName: 'Operations',
     ),
     ChecklistItemDto(
       id: 'vehicle-handover',
       name: 'Vehicle handover',
-      checklistcategoryName: 'Fleet',
-      appgroupName: 'Logistics',
+      checklistCategoryName: 'Fleet',
+      appGroupName: 'Logistics',
     ),
     ChecklistItemDto(
       id: 'opening-check',
       name: 'Opening checklist',
-      checklistcategoryName: 'Daily routines',
-      appgroupName: 'Retail',
+      checklistCategoryName: 'Daily routines',
+      appGroupName: 'Retail',
     ),
   ];
 
@@ -80,12 +80,32 @@ class FakeChecklistService implements ChecklistService {
       ChecklistDetailsDto(
         id: item.id,
         name: item.name,
-        checklistcategoryName: item.checklistcategoryName,
-        appgroupName: item.appgroupName,
+        checklistCategoryName: item.checklistCategoryName,
+        appGroupName: item.appGroupName,
+        companyName: 'Flutter Playground',
         dateCreated: '2026-01-15',
         lastUpdated: '2026-07-10',
-        fforwardbody:
+        versionNumber: '1',
+        editRight: true,
+        forwardBody:
             'A compact example of validated REST data flowing into immutable UI state.',
+        sections: [
+          ChecklistSectionDto(
+            id: '${item.id}-section',
+            name: 'Practice section',
+            sortOrder: 0,
+            fields: [
+              ChecklistFieldDto(
+                id: '${item.id}-field',
+                name: 'Practice field',
+                fieldTypeId: 'id-text',
+                fieldTypeName: 'Text',
+                sortOrder: 0,
+                isRequired: true,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
