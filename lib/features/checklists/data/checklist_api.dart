@@ -15,5 +15,5 @@ abstract class ChecklistApi {
   });
 
   @GET('/checklist/showdetail/{id}')
-  Future<ChecklistDetailsDto> getChecklistDetails(@Path('id') String id);
+  Future<Object?> getChecklistDetails(@Path('id') String id);
 }
