@@ -24,12 +24,14 @@ void main() {
         offset: 0,
       ),
     ).thenAnswer(
-      (_) async => const ChecklistPageDto(
-        data: [
-          ChecklistItemDto(id: 'first', name: 'First'),
-          ChecklistItemDto(name: 'Missing id'),
-          ChecklistItemDto(id: 'second', name: 'Second'),
-        ],
+      (_) async => const ApiSuccess(
+        ChecklistPageDto(
+          data: [
+            ChecklistItemDto(id: 'first', name: 'First'),
+            ChecklistItemDto(name: 'Missing id'),
+            ChecklistItemDto(id: 'second', name: 'Second'),
+          ],
+        ),
       ),
     );
 
@@ -48,7 +50,7 @@ void main() {
   test('returns a controlled error for invalid details', () async {
     when(
       () => service.getChecklistDetails('id'),
-    ).thenAnswer((_) async => const ChecklistDetailsDto(id: 'id'));
+    ).thenAnswer((_) async => const ApiSuccess(ChecklistDetailsDto(id: 'id')));
 
     final result = await repository.getChecklistDetails('id');
 
@@ -59,6 +61,22 @@ void main() {
         'type',
         FailureType.invalidResponse,
       ),
+    );
+  });
+
+  test('propagates transport failures with the domain result type', () async {
+    when(() => service.getChecklistDetails('id')).thenAnswer(
+      (_) async =>
+          const ApiFailure(type: FailureType.network, debugMessage: 'offline'),
+    );
+
+    final result = await repository.getChecklistDetails('id');
+
+    expect(
+      result,
+      isA<ApiFailure<ChecklistDetails>>()
+          .having((failure) => failure.type, 'type', FailureType.network)
+          .having((failure) => failure.debugMessage, 'debugMessage', 'offline'),
     );
   });
 }
