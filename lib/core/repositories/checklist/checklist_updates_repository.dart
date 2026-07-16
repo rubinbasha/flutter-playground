@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_updates_socket.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_models.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_updates_socket.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
