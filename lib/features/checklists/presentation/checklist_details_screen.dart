@@ -6,21 +6,16 @@ import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
 
 class ChecklistDetailsScreen extends StatelessWidget {
-  const ChecklistDetailsScreen({required this.cubit, super.key});
+  const ChecklistDetailsScreen({super.key});
 
   static const String route = '/dashboard/checklists/:checklistId';
 
   static String path(String checklistId) =>
       '/dashboard/checklists/${Uri.encodeComponent(checklistId)}';
 
-  final ChecklistDetailsCubit cubit;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: cubit,
-      child: const ChecklistDetailsView(),
-    );
+    return const ChecklistDetailsView();
   }
 }
 
