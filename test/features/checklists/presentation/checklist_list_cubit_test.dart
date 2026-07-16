@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_playground/core/repositories/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist_updates_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_updates_repository.dart';
 import 'package:flutter_playground/features/checklists/data/favorites_store.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
@@ -121,4 +121,21 @@ void main() {
     expect(cubit.state.favoriteIds, {'id'});
     verify(() => store.save({'id'})).called(1);
   });
+
+  blocTest<ChecklistListCubit, ChecklistListState>(
+    'selection emits a consumable navigation effect',
+    build: () => ChecklistListCubit(_MockChecklistRepository()),
+    act: (cubit) => cubit.checklistSelected('safety'),
+    expect: () => [
+      isA<ChecklistListState>().having(
+        (state) => state.effect?.peekContent(),
+        'effect',
+        isA<OpenChecklistDetails>().having(
+          (effect) => effect.checklistId,
+          'checklistId',
+          'safety',
+        ),
+      ),
+    ],
+  );
 }

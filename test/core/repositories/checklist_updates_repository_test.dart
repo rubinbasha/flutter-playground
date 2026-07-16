@@ -1,4 +1,4 @@
-import 'package:flutter_playground/features/checklists/data/checklist_updates_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist_updates_repository.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_updates_socket.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

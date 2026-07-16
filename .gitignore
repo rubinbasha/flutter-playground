@@ -27,11 +27,13 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
-/coverage/
+devtools_options.yaml
 
 # Symbolication related
 app.*.symbols
@@ -43,3 +45,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# generated code
+*.g.dart
+*.gr.dart
+*.freezed.dart
+*.iconfig.dart
+*.config.dart
+app_localizations_untranslated.txt
+
+rerune.json
+
+.opencode/
+.env
+docs/session-timelog.md
+lib/languages/I10n/app_localizations.rerune.g.dart
+lib/languages/I10n/app_localizations*.dart
+docs/risk-assessment-publish-revision.md
