@@ -14,7 +14,7 @@ void main() {
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: ChecklistListContent(
-            email: 'learner@example.com',
+            email: 'demo@example.com',
             state: const ChecklistListState(
               status: ChecklistListStatus.success,
               items: [ChecklistSummary(id: 'safety', name: 'Safety walk')],
