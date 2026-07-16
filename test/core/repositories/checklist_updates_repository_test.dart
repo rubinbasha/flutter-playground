@@ -32,4 +32,25 @@ void main() {
 
     expect(updates, isEmpty);
   });
+
+  test('maps nested details updates with idiomatic DTO fields', () async {
+    final socket = _MockChecklistUpdatesSocket();
+    when(() => socket.watchDetails('one')).thenAnswer(
+      (_) => Stream.value(
+        '{"id":"one","name":"Checklist",'
+        '"checklistcategoryName":"Category","appgroupName":"Group",'
+        '"sections":[{"id":"section","name":"Section",'
+        '"checklistfields":[{"id":"field","name":"Field",'
+        '"fieldtypId":"id-text","isrequired":true}]}]}',
+      ),
+    );
+    final repository = ChecklistUpdatesRepository(socket);
+
+    final updates = await repository.watchDetails('one').toList();
+
+    expect(updates.single.categoryName, 'Category');
+    expect(updates.single.appGroupName, 'Group');
+    expect(updates.single.sections.single.name, 'Section');
+    expect(updates.single.sections.single.fields.single.isRequired, isTrue);
+  });
 }
