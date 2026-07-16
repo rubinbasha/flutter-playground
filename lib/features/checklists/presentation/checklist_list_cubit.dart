@@ -1,14 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_playground/core/events/event.dart';
+import 'package:flutter_playground/core/repositories/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist_updates_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_repository.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_updates_repository.dart';
 import 'package:flutter_playground/features/checklists/data/favorites_store.dart';
 import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'checklist_list_cubit.freezed.dart';
+
+sealed class ChecklistListEffect {
+  const ChecklistListEffect();
+}
+
+final class OpenChecklistDetails extends ChecklistListEffect {
+  const OpenChecklistDetails(this.checklistId);
+
+  final String checklistId;
+}
 
 enum ChecklistListStatus { initial, loading, success }
 
@@ -23,6 +34,7 @@ abstract class ChecklistListState with _$ChecklistListState {
     @Default(false) bool isLoadingMore,
     @Default(true) bool hasMore,
     FailureType? failure,
+    Event<ChecklistListEffect>? effect,
   }) = _ChecklistListState;
 }
 
@@ -44,6 +56,10 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
   Timer? _searchDebounce;
   StreamSubscription<ChecklistSummary>? _updatesSubscription;
 
+  void checklistSelected(String checklistId) {
+    emit(state.copyWith(effect: Event(OpenChecklistDetails(checklistId))));
+  }
+
   Future<void> load() => _fetch(isRefresh: false);
 
   Future<void> refresh() => _fetch(isRefresh: true);
@@ -57,6 +73,7 @@ class ChecklistListCubit extends Cubit<ChecklistListState> {
         status: isRefresh ? state.status : ChecklistListStatus.loading,
         isRefreshing: isRefresh,
         failure: null,
+        effect: null,
       ),
     );
     final result = await _repository.getChecklists();
