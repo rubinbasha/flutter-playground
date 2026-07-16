@@ -98,10 +98,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appGroupLabel => 'App group';
 
   @override
+  String get companyLabel => 'Company';
+
+  @override
+  String get versionLabel => 'Version';
+
+  @override
   String get createdLabel => 'Created';
 
   @override
   String get updatedLabel => 'Updated';
+
+  @override
+  String get sectionsTitle => 'Sections';
+
+  @override
+  String get noChecklistSections => 'This checklist has no sections.';
+
+  @override
+  String fieldCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fields',
+      one: '1 field',
+      zero: 'No fields',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get requiredFieldLabel => 'Required';
+
+  @override
+  String get optionalFieldLabel => 'Optional';
 
   @override
   String get notAvailable => 'Not available';
