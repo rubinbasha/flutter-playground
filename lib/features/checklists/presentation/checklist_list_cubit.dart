@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/events/event.dart';
-import 'package:flutter_playground/core/repositories/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'checklist_list_cubit.freezed.dart';

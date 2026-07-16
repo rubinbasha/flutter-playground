@@ -38,9 +38,11 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for the graph and
 
 ## Project structure
 
-Feature directories own transport details, models, state, and UI. Repository
-classes live separately in `lib/core/repositories/`, where they validate and
-coordinate feature data for Cubits.
+Repository domains live under `lib/core/repositories/<domain>/`. Each domain
+owns its API clients, DTOs, services, persistence or realtime adapters,
+validated models, and repository coordination. Feature directories contain the
+presentation code that consumes those domains, so repository ownership is
+independent of any particular screen.
 
 Screen logic follows MVVM: widgets are Views, Cubits are ViewModels, and
 immutable state drives rendering. One-off typed effects are consumed through

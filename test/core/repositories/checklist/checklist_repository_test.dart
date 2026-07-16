@@ -1,8 +1,8 @@
-import 'package:flutter_playground/core/repositories/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_models.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_repository.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_service.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_service.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
