@@ -1,4 +1,4 @@
-import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
