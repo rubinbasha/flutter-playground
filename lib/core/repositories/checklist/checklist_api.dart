@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'checklist_api.g.dart';

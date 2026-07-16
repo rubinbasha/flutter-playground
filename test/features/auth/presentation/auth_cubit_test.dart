@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_playground/core/repositories/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,10 +33,8 @@ void main() {
     'successful login emits a single dashboard effect',
     setUp: () {
       when(
-        () => repository.login(
-          email: 'demo@example.com',
-          password: 'playground',
-        ),
+        () =>
+            repository.login(email: 'demo@example.com', password: 'playground'),
       ).thenAnswer((_) async => const ApiSuccess('demo@example.com'));
     },
     build: () => AuthCubit(repository),
