@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_playground/core/extensions/future_api_result_extension.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_api.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_models.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_api.dart';
-import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
 import 'package:injectable/injectable.dart';
 
 abstract interface class ChecklistService {

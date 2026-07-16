@@ -1,8 +1,8 @@
-import 'package:flutter_playground/core/repositories/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_models.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_service.dart';
+import 'package:flutter_playground/core/repositories/auth/token_storage.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/auth/data/auth_models.dart';
-import 'package:flutter_playground/features/auth/data/auth_service.dart';
-import 'package:flutter_playground/features/auth/data/token_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -45,10 +45,8 @@ void main() {
 
     expect(result, isA<ApiSuccess<String>>());
     verify(
-      () => storage.saveSession(
-        accessToken: 'token',
-        email: 'demo@example.com',
-      ),
+      () =>
+          storage.saveSession(accessToken: 'token', email: 'demo@example.com'),
     ).called(1);
   });
 
