@@ -70,4 +70,21 @@ void main() {
     expect(copied.debugMessage, 'offline');
     expect(copied.originalError, same(error));
   });
+
+  test('maps Dart errors such as generated response casts', () async {
+    final error = StateError('invalid generated response cast');
+
+    final result = await Future<String>.error(error).mapToApiResult();
+
+    expect(
+      result,
+      isA<ApiFailure<String>>()
+          .having((failure) => failure.type, 'type', FailureType.unknown)
+          .having(
+            (failure) => failure.originalError,
+            'originalError',
+            same(error),
+          ),
+    );
+  });
 }

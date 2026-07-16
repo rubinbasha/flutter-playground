@@ -11,7 +11,7 @@ extension FutureApiResult<T> on Future<T> {
         debugMessage: error.message,
         originalError: error,
       );
-    } on Exception catch (error) {
+    } on Object catch (error) {
       return ApiFailure<T>(
         type: FailureType.unknown,
         debugMessage: error.toString(),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_playground/core/extensions/future_api_result_extension.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
@@ -27,8 +29,38 @@ class DioChecklistService implements ChecklistService {
   }) => _api.getChecklists(limit: limit, offset: offset).mapToApiResult();
 
   @override
-  Future<GenericResponse<ChecklistDetailsDto>> getChecklistDetails(String id) =>
-      _api.getChecklistDetails(id).mapToApiResult();
+  Future<GenericResponse<ChecklistDetailsDto>> getChecklistDetails(
+    String id,
+  ) async {
+    final result = await _api.getChecklistDetails(id).mapToApiResult();
+    switch (result) {
+      case ApiFailure<Object?> failure:
+        return failure.copyWithType();
+      case ApiSuccess<Object?>(:final data):
+        try {
+          return ApiSuccess(ChecklistDetailsDto.fromJson(_jsonObject(data)));
+        } on Object catch (error) {
+          return ApiFailure(
+            type: FailureType.invalidResponse,
+            debugMessage: 'Checklist details are not a JSON object.',
+            originalError: error,
+          );
+        }
+    }
+  }
+
+  Map<String, dynamic> _jsonObject(Object? value) {
+    final decoded = value is String ? jsonDecode(value) : value;
+    if (decoded is Map<String, dynamic>) {
+      return decoded;
+    }
+    if (decoded is Map) {
+      return Map<String, dynamic>.from(decoded);
+    }
+    throw FormatException(
+      'Expected a JSON object but received ${decoded.runtimeType}.',
+    );
+  }
 }
 
 @LazySingleton(as: ChecklistService, env: ['demo'])
