@@ -280,6 +280,18 @@ abstract class AppLocalizations {
   /// **'App group'**
   String get appGroupLabel;
 
+  /// No description provided for @companyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get companyLabel;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionLabel;
+
   /// No description provided for @createdLabel.
   ///
   /// In en, this message translates to:
@@ -291,6 +303,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updated'**
   String get updatedLabel;
+
+  /// No description provided for @sectionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get sectionsTitle;
+
+  /// No description provided for @noChecklistSections.
+  ///
+  /// In en, this message translates to:
+  /// **'This checklist has no sections.'**
+  String get noChecklistSections;
+
+  /// No description provided for @fieldCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {No fields} =1 {1 field} other {{count} fields}}'**
+  String fieldCount(int count);
+
+  /// No description provided for @requiredFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get requiredFieldLabel;
+
+  /// No description provided for @optionalFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optionalFieldLabel;
 
   /// No description provided for @notAvailable.
   ///
