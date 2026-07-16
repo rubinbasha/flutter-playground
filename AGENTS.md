@@ -100,6 +100,8 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 - Validate required fields in repositories before creating strict domain state.
 - Keep app-owned request DTOs strict.
 - Convert transport exceptions into controlled `ApiFailure` values.
+- Preserve caught exception objects in `ApiFailure.originalError` so callers
+  can inspect the underlying transport or persistence error when needed.
 - Wrap Retrofit futures at the service boundary with `mapToApiResult()` so
   repositories receive `GenericResponse<T>` instead of handling Dio
   exceptions repeatedly.
