@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get email; String get password; AuthStatus get status; bool get isSubmitting; FailureType? get failure;
+ String get email; String get password; AuthStatus get status; bool get isSubmitting; FailureType? get failure; Event<AuthEffect>? get effect;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.status, status) || other.status == status)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.status, status) || other.status == status)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.failure, failure) || other.failure == failure)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,password,status,isSubmitting,failure);
+int get hashCode => Object.hash(runtimeType,email,password,status,isSubmitting,failure,effect);
 
 @override
 String toString() {
-  return 'AuthState(email: $email, password: $password, status: $status, isSubmitting: $isSubmitting, failure: $failure)';
+  return 'AuthState(email: $email, password: $password, status: $status, isSubmitting: $isSubmitting, failure: $failure, effect: $effect)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure
+ String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Event<AuthEffect>? effect
 });
 
 
@@ -62,14 +62,15 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? password = null,Object? status = null,Object? isSubmitting = null,Object? failure = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? password = null,Object? status = null,Object? isSubmitting = null,Object? failure = freezed,Object? effect = freezed,}) {
   return _then(_self.copyWith(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AuthStatus,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
-as FailureType?,
+as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
+as Event<AuthEffect>?,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure);case _:
+return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
-return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure);case _:
+return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  AuthStatus status,  bool isSubmitting,  FailureType? failure,  Event<AuthEffect>? effect)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure);case _:
+return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that.failure,_that.effect);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.email,_that.password,_that.status,_that.isSubmitting,_that
 
 
 class _AuthState implements AuthState {
-  const _AuthState({this.email = '', this.password = '', this.status = AuthStatus.unauthenticated, this.isSubmitting = false, this.failure});
+  const _AuthState({this.email = '', this.password = '', this.status = AuthStatus.unauthenticated, this.isSubmitting = false, this.failure, this.effect});
   
 
 @override@JsonKey() final  String email;
@@ -218,6 +219,7 @@ class _AuthState implements AuthState {
 @override@JsonKey() final  AuthStatus status;
 @override@JsonKey() final  bool isSubmitting;
 @override final  FailureType? failure;
+@override final  Event<AuthEffect>? effect;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.status, status) || other.status == status)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.status, status) || other.status == status)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.failure, failure) || other.failure == failure)&&(identical(other.effect, effect) || other.effect == effect));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,password,status,isSubmitting,failure);
+int get hashCode => Object.hash(runtimeType,email,password,status,isSubmitting,failure,effect);
 
 @override
 String toString() {
-  return 'AuthState(email: $email, password: $password, status: $status, isSubmitting: $isSubmitting, failure: $failure)';
+  return 'AuthState(email: $email, password: $password, status: $status, isSubmitting: $isSubmitting, failure: $failure, effect: $effect)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure
+ String email, String password, AuthStatus status, bool isSubmitting, FailureType? failure, Event<AuthEffect>? effect
 });
 
 
@@ -266,14 +268,15 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,Object? status = null,Object? isSubmitting = null,Object? failure = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,Object? status = null,Object? isSubmitting = null,Object? failure = freezed,Object? effect = freezed,}) {
   return _then(_AuthState(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AuthStatus,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
-as FailureType?,
+as FailureType?,effect: freezed == effect ? _self.effect : effect // ignore: cast_nullable_to_non_nullable
+as Event<AuthEffect>?,
   ));
 }
 

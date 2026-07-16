@@ -29,16 +29,27 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocBuilder<ChecklistListCubit, ChecklistListState>(
-        builder: (context, state) {
-          return ChecklistListContent(
-            state: state,
-            email: context.watch<AuthCubit>().state.email,
-            onRetry: context.read<ChecklistListCubit>().load,
-            onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
-          );
-        },
+    return BlocListener<ChecklistListCubit, ChecklistListState>(
+      listenWhen: (previous, current) => previous.effect != current.effect,
+      listener: (context, state) {
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case OpenChecklistDetails(:final checklistId):
+            context.push(ChecklistDetailsScreen.path(checklistId));
+          case _:
+            break;
+        }
+      },
+      child: SafeArea(
+        child: BlocBuilder<ChecklistListCubit, ChecklistListState>(
+          builder: (context, state) {
+            return ChecklistListContent(
+              state: state,
+              email: context.watch<AuthCubit>().state.email,
+              onRetry: context.read<ChecklistListCubit>().load,
+              onSelected: context.read<ChecklistListCubit>().checklistSelected,
+            );
+          },
+        ),
       ),
     );
   }
