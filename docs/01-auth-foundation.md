@@ -4,6 +4,9 @@
 
 ## Flow
 
+- `core/repositories/auth/` owns the complete authentication domain package:
+  Retrofit, DTOs, service adapters, token persistence, and repository
+  coordination.
 - `LoginView` calls focused input and submit methods on `AuthCubit`.
 - `AuthCubit` is the ViewModel: it validates local input, delegates asynchronous
   work, emits durable `AuthState`, and exposes navigation as a consumable

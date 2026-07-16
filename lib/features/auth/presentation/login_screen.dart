@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_service.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/auth/data/auth_service.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:go_router/go_router.dart';

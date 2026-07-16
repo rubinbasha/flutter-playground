@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_playground/features/auth/data/token_storage.dart';
+import 'package:flutter_playground/core/repositories/auth/token_storage.dart';
 import 'package:injectable/injectable.dart';
 
 const String noAuthenticationHeader = 'No-Authentication';

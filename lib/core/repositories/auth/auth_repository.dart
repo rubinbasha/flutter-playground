@@ -1,7 +1,7 @@
+import 'package:flutter_playground/core/repositories/auth/auth_models.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_service.dart';
+import 'package:flutter_playground/core/repositories/auth/token_storage.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
-import 'package:flutter_playground/features/auth/data/auth_models.dart';
-import 'package:flutter_playground/features/auth/data/auth_service.dart';
-import 'package:flutter_playground/features/auth/data/token_storage.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
