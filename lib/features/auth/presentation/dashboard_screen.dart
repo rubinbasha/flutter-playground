@@ -29,30 +29,41 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocConsumer<ChecklistListCubit, ChecklistListState>(
-        listenWhen: (previous, current) =>
-            previous.isRefreshing &&
-            !current.isRefreshing &&
-            current.failure != null,
-        listener: (context, state) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(context.l10n.refreshFailed)));
-        },
-        builder: (context, state) {
-          final cubit = context.read<ChecklistListCubit>();
-          return ChecklistListContent(
-            state: state,
-            email: context.watch<AuthCubit>().state.email,
-            onRetry: cubit.load,
-            onRefresh: cubit.refresh,
-            onLoadMore: cubit.loadNextPage,
-            onQueryChanged: cubit.searchChanged,
-            onToggleFavorite: cubit.toggleFavorite,
-            onSelected: (id) => context.go(ChecklistDetailsScreen.path(id)),
-          );
-        },
+    return BlocListener<ChecklistListCubit, ChecklistListState>(
+      listenWhen: (previous, current) => previous.effect != current.effect,
+      listener: (context, state) {
+        switch (state.effect?.getContentIfNotConsumed()) {
+          case OpenChecklistDetails(:final checklistId):
+            context.push(ChecklistDetailsScreen.path(checklistId));
+          case _:
+            break;
+        }
+      },
+      child: SafeArea(
+        child: BlocConsumer<ChecklistListCubit, ChecklistListState>(
+          listenWhen: (previous, current) =>
+              previous.isRefreshing &&
+              !current.isRefreshing &&
+              current.failure != null,
+          listener: (context, state) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(context.l10n.refreshFailed)));
+          },
+          builder: (context, state) {
+            final cubit = context.read<ChecklistListCubit>();
+            return ChecklistListContent(
+              state: state,
+              email: context.watch<AuthCubit>().state.email,
+              onRetry: cubit.load,
+              onRefresh: cubit.refresh,
+              onLoadMore: cubit.loadNextPage,
+              onQueryChanged: cubit.searchChanged,
+              onToggleFavorite: cubit.toggleFavorite,
+              onSelected: cubit.checklistSelected,
+            );
+          },
+        ),
       ),
     );
   }

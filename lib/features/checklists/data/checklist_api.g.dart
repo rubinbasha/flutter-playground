@@ -32,7 +32,7 @@ class _ChecklistApi implements ChecklistApi {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/apicheckittest/checklist/indexShort',
+            '/checklist/indexShort',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -59,7 +59,7 @@ class _ChecklistApi implements ChecklistApi {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/apicheckittest/checklist/showdetail/${id}',
+            '/checklist/showdetail/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

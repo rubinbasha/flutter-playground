@@ -20,10 +20,13 @@ class AuthenticatedShell extends StatelessWidget {
     return BlocProvider.value(
       value: authCubit,
       child: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (previous, current) => previous.status != current.status,
+        listenWhen: (previous, current) => previous.effect != current.effect,
         listener: (context, state) {
-          if (state.status == AuthStatus.unauthenticated) {
-            context.go(LoginScreen.route);
+          switch (state.effect?.getContentIfNotConsumed()) {
+            case AuthOpenLogin():
+              context.go(LoginScreen.route);
+            case _:
+              break;
           }
         },
         child: Builder(
