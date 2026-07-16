@@ -8,7 +8,7 @@ part 'auth_api.g.dart';
 abstract class AuthApi {
   factory AuthApi(Dio dio) = _AuthApi;
 
-  @POST('/login')
+  @POST('/api/login')
   @Headers(<String, dynamic>{'No-Authentication': 'true'})
   Future<AuthResponseDto> login(@Body() Map<String, dynamic> request);
 
