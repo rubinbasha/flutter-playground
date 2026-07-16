@@ -13,12 +13,17 @@ final class ApiSuccess<T> extends GenericResponse<T> {
 }
 
 final class ApiFailure<T> extends GenericResponse<T> {
-  const ApiFailure({required this.type, this.debugMessage});
+  const ApiFailure({required this.type, this.debugMessage, this.originalError});
 
   final FailureType type;
   final String? debugMessage;
+  final Object? originalError;
 
   ApiFailure<R> copyWithType<R>() {
-    return ApiFailure<R>(type: type, debugMessage: debugMessage);
+    return ApiFailure<R>(
+      type: type,
+      debugMessage: debugMessage,
+      originalError: originalError,
+    );
   }
 }

@@ -9,11 +9,13 @@ extension FutureApiResult<T> on Future<T> {
       return ApiFailure<T>(
         type: _failureType(error),
         debugMessage: error.message,
+        originalError: error,
       );
     } on Exception catch (error) {
       return ApiFailure<T>(
         type: FailureType.unknown,
         debugMessage: error.toString(),
+        originalError: error,
       );
     }
   }
