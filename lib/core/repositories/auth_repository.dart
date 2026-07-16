@@ -44,6 +44,7 @@ class AuthRepository {
           return ApiFailure(
             type: FailureType.unknown,
             debugMessage: error.toString(),
+            originalError: error,
           );
         }
     }
@@ -62,6 +63,7 @@ class AuthRepository {
           return ApiFailure(
             type: FailureType.unknown,
             debugMessage: error.toString(),
+            originalError: error,
           );
         }
     }
