@@ -1,5 +1,5 @@
-import 'package:flutter_playground/features/checklists/data/checklist_cache.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist_cache.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

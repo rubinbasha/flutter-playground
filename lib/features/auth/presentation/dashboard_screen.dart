@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/extensions/build_context_extensions.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
 import 'package:flutter_playground/core/widgets/page_state_view.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_screen.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
 import 'package:go_router/go_router.dart';
