@@ -9,18 +9,13 @@ import 'package:flutter_playground/features/checklists/presentation/checklist_li
 import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({required this.checklistListCubit, super.key});
+  const DashboardScreen({super.key});
 
   static const String route = '/dashboard';
 
-  final ChecklistListCubit checklistListCubit;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: checklistListCubit,
-      child: const DashboardView(),
-    );
+    return const DashboardView();
   }
 }
 
