@@ -57,8 +57,8 @@ class FakeChecklistService implements ChecklistService {
       (index) => ChecklistItemDto(
         id: 'practice-${index + 1}',
         name: 'Practice checklist ${index + 1}',
-        checklistcategoryName: index.isEven ? 'Safety' : 'Operations',
-        appgroupName: 'Learning lab',
+        checklistCategoryName: index.isEven ? 'Safety' : 'Operations',
+        appGroupName: 'Learning lab',
       ),
     ),
   ];
