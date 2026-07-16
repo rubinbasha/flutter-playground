@@ -1,7 +1,7 @@
 # Checklist MVVM slice
 
-The `mvi` branch keeps its historical name from the Compose learning path, but
-the Flutter implementation uses idiomatic MVVM with `flutter_bloc`.
+The `mvi` branch keeps its historical name from the Compose branch progression,
+but the Flutter implementation uses idiomatic MVVM with `flutter_bloc`.
 
 ## Structure
 

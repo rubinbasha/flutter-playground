@@ -39,7 +39,7 @@ void main() {
     ).thenAnswer((_) async {});
 
     final result = await repository.login(
-      email: 'learner@example.com',
+      email: 'demo@example.com',
       password: 'playground',
     );
 
@@ -47,7 +47,7 @@ void main() {
     verify(
       () => storage.saveSession(
         accessToken: 'token',
-        email: 'learner@example.com',
+        email: 'demo@example.com',
       ),
     ).called(1);
   });
@@ -58,7 +58,7 @@ void main() {
     ).thenAnswer((_) async => const ApiSuccess(AuthResponseDto()));
 
     final result = await repository.login(
-      email: 'learner@example.com',
+      email: 'demo@example.com',
       password: 'playground',
     );
 

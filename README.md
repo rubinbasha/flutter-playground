@@ -1,24 +1,24 @@
 # Flutter Playground
 
-A branch-driven Flutter learning project inspired by the progression in
-`rubinbasha/compose-playground`. It uses the architecture and engineering
-conventions from `roe_risk_checkit`, reduced to examples that are small enough
-to study. The generated application targets Android and iOS only.
+A branch-driven Flutter demo used for experimentation, inspired by the
+progression in `rubinbasha/compose-playground`. It uses the architecture and
+engineering conventions from `roe_risk_checkit`, reduced to focused examples.
+The generated application targets Android and iOS only.
 
-The app uses the real API adapter by default. For deterministic learning and
-tests, start it with `--dart-define=USE_REAL_API=false` and sign in with:
+The app uses the real API adapter by default. For deterministic experimentation
+and tests, start it with `--dart-define=USE_REAL_API=false` and sign in with:
 
 ```text
-learner@example.com
+demo@example.com
 playground
 ```
 
-## Learning branches
+## Experiment branches
 
-Each feature branch starts from `mvi`, teaches one idea in isolation, and stays
+Each feature branch starts from `mvi`, explores one idea in isolation, and stays
 runnable. Combined branches demonstrate how the pieces interact.
 
-| Branch | Learning focus |
+| Branch | Experiment focus |
 | --- | --- |
 | `main` | Auth API boundary, MVVM Cubit, routing, DI, token persistence |
 | `mvi` | MVVM checklist list/details, immutable state, layered tests |

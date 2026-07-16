@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @signInTitle.
   ///
   /// In en, this message translates to:
-  /// **'Learn with a real app flow'**
+  /// **'Experiment with a real app flow'**
   String get signInTitle;
 
   /// No description provided for @signInSubtitle.

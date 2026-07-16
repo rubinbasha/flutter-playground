@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "appTitle": "Flutter Playground",
-  "signInTitle": "Learn with a real app flow",
+  "signInTitle": "Experiment with a real app flow",
   "signInSubtitle": "Start with authentication on main, then explore one focused concept per branch.",
   "emailLabel": "Email",
   "passwordLabel": "Password",
