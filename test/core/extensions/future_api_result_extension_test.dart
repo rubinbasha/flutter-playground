@@ -19,41 +19,55 @@ void main() {
 
   test('maps an unauthorized Dio response to failure', () async {
     final requestOptions = RequestOptions(path: '/protected');
-    final result = await Future<String>.error(
-      DioException(
-        requestOptions: requestOptions,
-        response: Response<void>(
-          requestOptions: requestOptions,
-          statusCode: 401,
-        ),
-      ),
-    ).mapToApiResult();
+    final error = DioException(
+      requestOptions: requestOptions,
+      response: Response<void>(requestOptions: requestOptions, statusCode: 401),
+    );
+    final result = await Future<String>.error(error).mapToApiResult();
 
     expect(
       result,
-      isA<ApiFailure<String>>().having(
-        (failure) => failure.type,
-        'type',
-        FailureType.unauthorized,
-      ),
+      isA<ApiFailure<String>>()
+          .having((failure) => failure.type, 'type', FailureType.unauthorized)
+          .having(
+            (failure) => failure.originalError,
+            'originalError',
+            same(error),
+          ),
     );
   });
 
   test('maps a connection failure to network failure', () async {
-    final result = await Future<String>.error(
-      DioException(
-        requestOptions: RequestOptions(path: '/offline'),
-        type: DioExceptionType.connectionError,
-      ),
-    ).mapToApiResult();
+    final error = DioException(
+      requestOptions: RequestOptions(path: '/offline'),
+      type: DioExceptionType.connectionError,
+    );
+    final result = await Future<String>.error(error).mapToApiResult();
 
     expect(
       result,
-      isA<ApiFailure<String>>().having(
-        (failure) => failure.type,
-        'type',
-        FailureType.network,
-      ),
+      isA<ApiFailure<String>>()
+          .having((failure) => failure.type, 'type', FailureType.network)
+          .having(
+            (failure) => failure.originalError,
+            'originalError',
+            same(error),
+          ),
     );
+  });
+
+  test('copyWithType preserves the original error', () {
+    final error = Exception('offline');
+    final failure = ApiFailure<String>(
+      type: FailureType.network,
+      debugMessage: 'offline',
+      originalError: error,
+    );
+
+    final copied = failure.copyWithType<int>();
+
+    expect(copied.type, FailureType.network);
+    expect(copied.debugMessage, 'offline');
+    expect(copied.originalError, same(error));
   });
 }
