@@ -1,15 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_playground/core/extensions/future_api_result_extension.dart';
+import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_api.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
 import 'package:injectable/injectable.dart';
 
 abstract interface class ChecklistService {
-  Future<ChecklistPageDto> getChecklists({
+  Future<GenericResponse<ChecklistPageDto>> getChecklists({
     required int limit,
     required int offset,
   });
 
-  Future<ChecklistDetailsDto> getChecklistDetails(String id);
+  Future<GenericResponse<ChecklistDetailsDto>> getChecklistDetails(String id);
 }
 
 @LazySingleton(as: ChecklistService, env: ['production'])
@@ -19,14 +21,14 @@ class DioChecklistService implements ChecklistService {
   final ChecklistApi _api;
 
   @override
-  Future<ChecklistPageDto> getChecklists({
+  Future<GenericResponse<ChecklistPageDto>> getChecklists({
     required int limit,
     required int offset,
-  }) => _api.getChecklists(limit: limit, offset: offset);
+  }) => _api.getChecklists(limit: limit, offset: offset).mapToApiResult();
 
   @override
-  Future<ChecklistDetailsDto> getChecklistDetails(String id) =>
-      _api.getChecklistDetails(id);
+  Future<GenericResponse<ChecklistDetailsDto>> getChecklistDetails(String id) =>
+      _api.getChecklistDetails(id).mapToApiResult();
 }
 
 @LazySingleton(as: ChecklistService, env: ['demo'])
@@ -53,7 +55,7 @@ class FakeChecklistService implements ChecklistService {
   ];
 
   @override
-  Future<ChecklistPageDto> getChecklists({
+  Future<GenericResponse<ChecklistPageDto>> getChecklists({
     required int limit,
     required int offset,
   }) async {
@@ -62,25 +64,29 @@ class FakeChecklistService implements ChecklistService {
     final page = offset >= _items.length
         ? <ChecklistItemDto>[]
         : _items.sublist(offset, end);
-    return ChecklistPageDto(totalCount: _items.length, data: page);
+    return ApiSuccess(ChecklistPageDto(totalCount: _items.length, data: page));
   }
 
   @override
-  Future<ChecklistDetailsDto> getChecklistDetails(String id) async {
+  Future<GenericResponse<ChecklistDetailsDto>> getChecklistDetails(
+    String id,
+  ) async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
     final item = _items.where((candidate) => candidate.id == id).firstOrNull;
     if (item == null) {
-      return const ChecklistDetailsDto();
+      return const ApiSuccess(ChecklistDetailsDto());
     }
-    return ChecklistDetailsDto(
-      id: item.id,
-      name: item.name,
-      checklistcategoryName: item.checklistcategoryName,
-      appgroupName: item.appgroupName,
-      dateCreated: '2026-01-15',
-      lastUpdated: '2026-07-10',
-      fforwardbody:
-          'A compact example of validated REST data flowing into immutable UI state.',
+    return ApiSuccess(
+      ChecklistDetailsDto(
+        id: item.id,
+        name: item.name,
+        checklistcategoryName: item.checklistcategoryName,
+        appgroupName: item.appgroupName,
+        dateCreated: '2026-01-15',
+        lastUpdated: '2026-07-10',
+        fforwardbody:
+            'A compact example of validated REST data flowing into immutable UI state.',
+      ),
     );
   }
 }

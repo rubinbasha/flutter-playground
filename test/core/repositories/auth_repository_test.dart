@@ -28,9 +28,9 @@ void main() {
   });
 
   test('login stores a validated access token', () async {
-    when(
-      () => service.login(any()),
-    ).thenAnswer((_) async => const AuthResponseDto(accessToken: 'token'));
+    when(() => service.login(any())).thenAnswer(
+      (_) async => const ApiSuccess(AuthResponseDto(accessToken: 'token')),
+    );
     when(
       () => storage.saveSession(
         accessToken: any(named: 'accessToken'),
@@ -55,7 +55,7 @@ void main() {
   test('login rejects a response without an access token', () async {
     when(
       () => service.login(any()),
-    ).thenAnswer((_) async => const AuthResponseDto());
+    ).thenAnswer((_) async => const ApiSuccess(AuthResponseDto()));
 
     final result = await repository.login(
       email: 'learner@example.com',
