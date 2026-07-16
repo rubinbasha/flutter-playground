@@ -1,8 +1,9 @@
 # Branching strategy
 
-The repository is a learning graph. `main` establishes authentication. `mvi`
-adds the shared checklist use case and becomes the base for isolated examples.
-The full-featured branches merge those examples to expose integration tradeoffs.
+The repository is an experimentation graph. `main` establishes authentication.
+`mvi` adds the shared checklist use case and becomes the base for isolated
+examples. The full-featured branches merge those examples to expose integration
+tradeoffs.
 
 ```mermaid
 gitGraph
@@ -40,5 +41,5 @@ gitGraph
   merge bottom-navigation
 ```
 
-Isolated branches intentionally avoid depending on sibling branches. A learner
-can diff any one of them against `mvi` and see only the concept being taught.
+Isolated branches intentionally avoid depending on sibling branches. Each one
+can be diffed against `mvi` to show only the concept under experimentation.

@@ -28,6 +28,6 @@ void main() {
     expect(find.byKey(const Key('emailField')), findsOneWidget);
     expect(find.byKey(const Key('passwordField')), findsOneWidget);
     expect(find.byKey(const Key('signInButton')), findsOneWidget);
-    expect(find.textContaining('learner@example.com'), findsOneWidget);
+    expect(find.textContaining('demo@example.com'), findsOneWidget);
   });
 }
