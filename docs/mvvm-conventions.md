@@ -27,7 +27,7 @@ Screens do not accept Cubits in constructors. `BlocProvider(create: ...)` owns
 and closes each scoped Cubit; `BlocProvider.value` is reserved for deliberately
 re-exposing an existing instance.
 
-Every feature uses Cubit so learners see one interaction model throughout the
+Every feature uses Cubit so the demo has one interaction model throughout the
 branch graph. A full `Bloc<Event, State>` should only be considered if a future
 requirement needs explicit event transformation or concurrency policies that
 Cubit cannot express cleanly.

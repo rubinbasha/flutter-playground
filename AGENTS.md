@@ -1,21 +1,21 @@
 # AGENTS.md
 
-This guide keeps generated changes consistent with the learning goals and with
-the Flutter conventions adapted from `roe_risk_checkit`.
+This guide keeps generated changes consistent with the demo's experimentation
+goals and with the Flutter conventions adapted from `roe_risk_checkit`.
 
 ## Engineering approach
 
 - Think before coding. State assumptions that affect product behavior, API
   contracts, persistence, navigation, or branch ancestry.
-- Prefer the minimum implementation that teaches or solves the requested idea.
-  Do not add speculative abstractions or configuration.
+- Prefer the minimum implementation that demonstrates or solves the requested
+  idea. Do not add speculative abstractions or configuration.
 - Keep changes surgical. Preserve the style of the branch being edited and
   remove only unused code introduced by the current change.
 - Define verifiable success criteria for multi-step work and loop through the
   relevant formatter, analyzer, and tests.
 - Never commit, push, or publish unless the user explicitly requests it.
 
-## Branch-driven learning
+## Branch-driven experimentation
 
 - `main` is the authentication foundation.
 - `mvi` is the base for checklist feature experiments.
@@ -54,7 +54,7 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 ## State management
 
 - Use `Cubit<State>` from `flutter_bloc` for screen state throughout the branch
-  graph so every example teaches one interaction model.
+  graph so every example uses one interaction model.
 - Treat widgets as Views and their screen-level Cubits as ViewModels.
 - Every screen-level Cubit exposes immutable `State` and defines typed effect
   payloads next to the Cubit when one-off UI work is needed.
