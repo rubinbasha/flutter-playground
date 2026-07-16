@@ -34,27 +34,27 @@ void main() {
     setUp: () {
       when(
         () => repository.login(
-          email: 'learner@example.com',
+          email: 'demo@example.com',
           password: 'playground',
         ),
-      ).thenAnswer((_) async => const ApiSuccess('learner@example.com'));
+      ).thenAnswer((_) async => const ApiSuccess('demo@example.com'));
     },
     build: () => AuthCubit(repository),
     act: (cubit) async {
       cubit
-        ..emailChanged('  learner@example.com  ')
+        ..emailChanged('  demo@example.com  ')
         ..passwordChanged('playground');
       await cubit.login();
     },
     skip: 2,
     expect: () => [
       const AuthState(
-        email: '  learner@example.com  ',
+        email: '  demo@example.com  ',
         password: 'playground',
         isSubmitting: true,
       ),
       isA<AuthState>()
-          .having((state) => state.email, 'email', 'learner@example.com')
+          .having((state) => state.email, 'email', 'demo@example.com')
           .having((state) => state.status, 'status', AuthStatus.authenticated)
           .having(
             (state) => state.effect?.peekContent(),
