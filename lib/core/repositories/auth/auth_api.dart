@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_playground/features/auth/data/auth_models.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_models.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'auth_api.g.dart';

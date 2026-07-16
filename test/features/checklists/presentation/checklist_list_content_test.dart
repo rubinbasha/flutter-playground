@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_playground/core/repositories/checklist/checklist.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
-import 'package:flutter_playground/features/checklists/domain/checklist.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_list_cubit.dart';
 import 'package:flutter_playground/l10n/generated/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';

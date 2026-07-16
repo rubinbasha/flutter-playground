@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/events/event.dart';
-import 'package:flutter_playground/core/repositories/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_repository.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
