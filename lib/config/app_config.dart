@@ -6,7 +6,7 @@ abstract final class AppConfig {
 
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://checkitonline.de/apicheckittest/api/',
+    defaultValue: 'https://checkitonline.de/apicheckittest/',
   );
 
   static const String checklistItemsWebSocketUrl = String.fromEnvironment(
