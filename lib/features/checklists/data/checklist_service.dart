@@ -90,7 +90,7 @@ class FakeChecklistService implements ChecklistService {
         id: 'practice-${index + 1}',
         name: 'Practice checklist ${index + 1}',
         checklistCategoryName: index.isEven ? 'Safety' : 'Operations',
-        appGroupName: 'Learning lab',
+        appGroupName: 'Experimentation demo',
       ),
     ),
   ];
