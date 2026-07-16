@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_playground/core/result/api_result.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_cache.dart';
 import 'package:flutter_playground/features/checklists/data/checklist_models.dart';
@@ -16,52 +15,40 @@ class ChecklistRepository {
   final ChecklistCache _cache;
 
   Future<ApiResult<List<ChecklistSummary>>> getChecklists() async {
-    try {
-      final response = await _service.getChecklists(
-        limit: defaultLimit,
-        offset: 0,
-      );
-      final items =
-          response.data
-              ?.map(_toSummary)
-              .whereType<ChecklistSummary>()
-              .toList(growable: false) ??
-          const <ChecklistSummary>[];
-      try {
-        await _cache.save(items);
-      } on Exception {
-        // Caching is supplemental; fresh API data remains usable.
-      }
-      return ApiSuccess(items);
-    } on DioException catch (error) {
-      return _cachedOr(
-        ApiFailure(type: FailureType.network, debugMessage: error.message),
-      );
-    } on Exception catch (error) {
-      return _cachedOr(
-        ApiFailure(type: FailureType.unknown, debugMessage: error.toString()),
-      );
+    final result = await _service.getChecklists(limit: defaultLimit, offset: 0);
+    switch (result) {
+      case ApiFailure<ChecklistPageDto> failure:
+        return _cachedOr(failure.copyWithType());
+      case ApiSuccess<ChecklistPageDto>(:final data):
+        final items =
+            data.data
+                ?.map(_toSummary)
+                .whereType<ChecklistSummary>()
+                .toList(growable: false) ??
+            const <ChecklistSummary>[];
+        try {
+          await _cache.save(items);
+        } on Exception {
+          // Caching is supplemental; fresh API data remains usable.
+        }
+        return ApiSuccess(items);
     }
   }
 
   Future<ApiResult<ChecklistDetails>> getChecklistDetails(String id) async {
-    try {
-      final response = await _service.getChecklistDetails(id);
-      final details = _toDetails(response);
-      if (details == null) {
-        return const ApiFailure(
-          type: FailureType.invalidResponse,
-          debugMessage: 'Checklist details are missing id or name.',
-        );
-      }
-      return ApiSuccess(details);
-    } on DioException catch (error) {
-      return ApiFailure(type: FailureType.network, debugMessage: error.message);
-    } on Exception catch (error) {
-      return ApiFailure(
-        type: FailureType.unknown,
-        debugMessage: error.toString(),
-      );
+    final result = await _service.getChecklistDetails(id);
+    switch (result) {
+      case ApiFailure<ChecklistDetailsDto> failure:
+        return failure.copyWithType();
+      case ApiSuccess<ChecklistDetailsDto>(:final data):
+        final details = _toDetails(data);
+        if (details == null) {
+          return const ApiFailure(
+            type: FailureType.invalidResponse,
+            debugMessage: 'Checklist details are missing id or name.',
+          );
+        }
+        return ApiSuccess(details);
     }
   }
 
