@@ -46,7 +46,7 @@ abstract class NetworkModule {
   PrettyDioLogger get logger => PrettyDioLogger(
     requestHeader: false,
     requestBody: true,
-    responseBody: false,
+    responseBody: true,
     compact: true,
   );
 }
