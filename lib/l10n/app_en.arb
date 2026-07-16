@@ -23,7 +23,7 @@
   "accountLabel": "Account",
   "accountTitle": "Your account",
   "aboutThisPlayground": "About this playground",
-  "aboutThisPlaygroundBody": "A mobile-only branch-driven app for learning production Flutter patterns.",
+  "aboutThisPlaygroundBody": "A mobile-only branch-driven demo used for experimentation with production Flutter patterns.",
   "dashboardTitle": "Playground",
   "dashboardHeadline": "Authentication foundation complete",
   "dashboardBody": "This branch demonstrates routing, MVVM Cubit state, dependency injection, token persistence, Dio interceptors, Retrofit DTOs, localization, and focused tests.",

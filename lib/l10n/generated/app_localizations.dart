@@ -199,7 +199,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutThisPlaygroundBody.
   ///
   /// In en, this message translates to:
-  /// **'A mobile-only branch-driven app for learning production Flutter patterns.'**
+  /// **'A mobile-only branch-driven demo used for experimentation with production Flutter patterns.'**
   String get aboutThisPlaygroundBody;
 
   /// No description provided for @dashboardTitle.
