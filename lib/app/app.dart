@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/core/di/injection.dart';
-import 'package:flutter_playground/core/repositories/auth_repository.dart';
+import 'package:flutter_playground/core/repositories/auth/auth_repository.dart';
 import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/l10n/generated/app_localizations.dart';
 import 'package:flutter_playground/theme/app_theme.dart';
