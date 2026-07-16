@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Flutter Playground';
 
   @override
-  String get signInTitle => 'Learn with a real app flow';
+  String get signInTitle => 'Experiment with a real app flow';
 
   @override
   String get signInSubtitle =>
