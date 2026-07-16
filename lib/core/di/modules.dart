@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_playground/config/app_config.dart';
 import 'package:flutter_playground/core/network/auth_token_interceptor.dart';
 import 'package:flutter_playground/core/repositories/auth_repository.dart';
 import 'package:flutter_playground/core/repositories/checklist_repository.dart';
 import 'package:flutter_playground/core/repositories/checklist_updates_repository.dart';
-import 'package:flutter_playground/features/auth/presentation/auth_cubit.dart';
 import 'package:flutter_playground/features/auth/presentation/dashboard_screen.dart';
 import 'package:flutter_playground/features/auth/presentation/login_screen.dart';
 import 'package:flutter_playground/features/checklists/presentation/checklist_details_cubit.dart';
@@ -66,29 +66,29 @@ abstract class RouterModule {
       routes: [
         GoRoute(
           path: LoginScreen.route,
-          builder: (context, state) =>
-              LoginScreen(cubit: AuthCubit(authRepository)),
+          builder: (context, state) => const LoginScreen(),
         ),
         GoRoute(
           path: DashboardScreen.route,
-          builder: (context, state) => DashboardScreen(
-            authCubit: AuthCubit(authRepository),
-            checklistListCubit: ChecklistListCubit(
+          builder: (context, state) => BlocProvider(
+            create: (_) => ChecklistListCubit(
               checklistRepository,
               checklistUpdatesRepository,
             )..load(),
+            child: const DashboardScreen(),
           ),
         ),
         GoRoute(
           path: ChecklistDetailsScreen.route,
           builder: (context, state) {
             final checklistId = state.pathParameters['checklistId'] ?? '';
-            return ChecklistDetailsScreen(
-              cubit: ChecklistDetailsCubit(
+            return BlocProvider(
+              create: (_) => ChecklistDetailsCubit(
                 checklistRepository,
                 checklistId,
                 checklistUpdatesRepository,
               )..load(),
+              child: const ChecklistDetailsScreen(),
             );
           },
         ),
