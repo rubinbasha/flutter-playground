@@ -97,6 +97,9 @@ the Flutter conventions adapted from `roe_risk_checkit`.
 
 - Treat backend JSON as untrusted. Response DTO fields are nullable or have safe
   defaults at the network boundary.
+- When an endpoint inconsistently returns a decoded JSON object or a JSON
+  string, keep the Retrofit return type raw and normalize both shapes in its
+  service before constructing the DTO.
 - Give DTO properties idiomatic Dart names and use `@JsonKey(name: ...)` to
   isolate inconsistent backend casing or terminology.
 - Validate required fields in repositories before creating strict domain state.
