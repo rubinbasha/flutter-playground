@@ -19,8 +19,38 @@ abstract class ChecklistDetails with _$ChecklistDetails {
     required String name,
     String? categoryName,
     String? appGroupName,
+    String? companyName,
     String? dateCreated,
     String? lastUpdated,
+    String? versionNumber,
+    bool? editRight,
     String? description,
+    @Default(<ChecklistSection>[]) List<ChecklistSection> sections,
   }) = _ChecklistDetails;
+}
+
+@freezed
+abstract class ChecklistSection with _$ChecklistSection {
+  const factory ChecklistSection({
+    required String id,
+    required String name,
+    int? sortOrder,
+    @Default(<ChecklistField>[]) List<ChecklistField> fields,
+  }) = _ChecklistSection;
+}
+
+@freezed
+abstract class ChecklistField with _$ChecklistField {
+  const factory ChecklistField({
+    required String id,
+    required String name,
+    String? fieldTypeId,
+    String? fieldTypeName,
+    int? sortOrder,
+    @Default(false) bool isRequired,
+    @Default(false) bool isTextArea,
+    @Default(false) bool isMultiple,
+    @Default(false) bool isDateTime,
+    @Default(false) bool isSignature,
+  }) = _ChecklistField;
 }
