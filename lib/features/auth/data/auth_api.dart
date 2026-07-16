@@ -12,6 +12,6 @@ abstract class AuthApi {
   @Headers(<String, dynamic>{'No-Authentication': 'true'})
   Future<AuthResponseDto> login(@Body() Map<String, dynamic> request);
 
-  @POST('/auth/logout')
+  @POST('/appuser/logoff')
   Future<void> logout();
 }
